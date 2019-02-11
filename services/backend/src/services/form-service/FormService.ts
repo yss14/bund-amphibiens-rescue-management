@@ -1,6 +1,6 @@
 import { IFormService } from "./IFormService";
 import { Db, Collection, ObjectID } from "mongodb";
-import { IFormWithID, IForm, isFormWithID } from "../../../../shared-types/IForm";
+import { IFormWithID, IForm } from "../../../../shared-types/IForm";
 
 export class FormNotFoundError extends Error {
 	constructor(id: string) {
@@ -14,25 +14,25 @@ export class FormModificationFailedError extends Error {
 	}
 }
 
+interface IFormDBResult extends IForm {
+	_id: ObjectID
+}
+
 export class FormService implements IFormService {
-	private readonly dbCollection: Collection<IForm>;
+	private readonly dbCollection: Collection<IFormDBResult>;
 
 	constructor(database: Db) {
-		this.dbCollection = database.collection<IForm>('forms');
+		this.dbCollection = database.collection<IFormDBResult>('forms');
 	}
 
-	public async getForm(id: string) {
+	public async getForm(id: string): Promise<IFormWithID> {
 		const objectID = new ObjectID(id);
 		const dbResult = await this.dbCollection.find({ _id: objectID }).toArray();
-
-		console.log(dbResult)
 
 		if (dbResult.length > 0) {
 			const formFromDB = dbResult[0];
 
-			if (isFormWithID(formFromDB)) {
-				return formFromDB;
-			}
+			return { ...formFromDB, id: formFromDB._id.toHexString() };
 		}
 
 		throw new FormNotFoundError(id);
@@ -41,17 +41,17 @@ export class FormService implements IFormService {
 	public async getAllForms(): Promise<IFormWithID[]> {
 		const dbResults = await this.dbCollection.find().toArray();
 
-		return dbResults.filter(isFormWithID);
+		return dbResults.map(dbResult => ({ ...dbResult, id: dbResult._id.toHexString() }));
 
 	}
 
-	public async createForm(form: IForm) {
-		const dbResult = await this.dbCollection.insertOne(form);
+	public async createForm(form: IForm): Promise<IFormWithID> {
+		const dbResult = await this.dbCollection.insertOne(form as any);
 
 		if (dbResult.insertedCount === 1 && dbResult.insertedId) {
 			return {
 				...form,
-				_id: dbResult.insertedId.toHexString()
+				id: dbResult.insertedId.toHexString()
 			}
 		} else {
 			throw new FormModificationFailedError('insert');
@@ -59,8 +59,8 @@ export class FormService implements IFormService {
 	}
 
 	public async updateForm(form: IFormWithID): Promise<void> {
-		const { _id, ...formWithoutID } = form;
-		const objectID = new ObjectID(form._id);
+		const { id, ...formWithoutID } = form;
+		const objectID = new ObjectID(form.id);
 		const dbResult = await this.dbCollection.updateOne(
 			{ _id: objectID },
 			{

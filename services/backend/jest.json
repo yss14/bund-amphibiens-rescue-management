@@ -1,0 +1,35 @@
+{
+	"rootDir": "./",
+	"transform": {
+		"^.+\\.tsx?$": "ts-jest"
+	},
+	"testEnvironment": "node",
+	"testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(tsx?)$",
+	"moduleFileExtensions": [
+		"ts",
+		"tsx",
+		"js",
+		"jsx",
+		"json"
+	],
+	"globalSetup": "./src/__test__/global-setup.ts",
+	"collectCoverage": false,
+	"collectCoverageFrom": [
+		"**/*.ts",
+		"!**/node_modules/**",
+		"!**/vendor/**"
+	],
+	"coverageReporters": [
+		"text",
+		"lcov"
+	],
+	"coverageThreshold": {
+		"global": {
+			"branches": 0,
+			"functions": 0,
+			"lines": 0
+		}
+	},
+	"preset": "ts-jest",
+	"testMatch": null
+}

@@ -7,6 +7,7 @@ export enum Cloudiness {
 export interface IFormTableItem {
 	bucketNumber: number;
 	amphibiansKind: string;
+	amount: number;
 }
 
 export interface IForm {
@@ -19,9 +20,9 @@ export interface IForm {
 }
 
 export interface IFormWithID extends IForm {
-	_id: string;
+	id: string;
 }
 
 export const isFormWithID = (form: any): form is IFormWithID => {
-	return (<IFormWithID>form)._id !== undefined && form._id !== null;
+	return (<IFormWithID>form).id !== undefined && form._id !== null;
 }

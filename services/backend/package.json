@@ -6,7 +6,8 @@
 	"scripts": {
 		"start": "npm run build && cross-env NODE_ENV=development node build/backend/src/index.js",
 		"build": "tsc --project tsconfig.json",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "jest --config=jest.json",
+		"test:watch": "jest --watch --config=jest.json"
 	},
 	"author": "Yannick Stachelscheid",
 	"license": "MIT",
