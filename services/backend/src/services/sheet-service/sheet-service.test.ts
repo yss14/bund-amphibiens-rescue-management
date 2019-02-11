@@ -138,3 +138,24 @@ describe('update sheet', () => {
 		expect(newSheetFetched).toEqual(newSheet);
 	});
 });
+
+describe('delete sheet', () => {
+	test('delete existing sheet', async () => {
+		const sheetService = await makeUniqueSheetService();
+
+		const createdSheet = await sheetService.createSheet(sheetTemplate1);
+
+		await sheetService.deleteSheet(createdSheet.id);
+
+		await expect(sheetService.getSheet(createdSheet.id))
+			.rejects.toThrow(`Sheet with id ${createdSheet.id} not found in database`);
+	});
+
+	test('delete not-existing sheet', async () => {
+		const sheetService = await makeUniqueSheetService();
+
+		const notExistingID = '5c6082cea068a184fc11aaaa';
+
+		await sheetService.deleteSheet(notExistingID);
+	});
+});

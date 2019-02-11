@@ -6,4 +6,6 @@ export interface ISheetService {
 
 	createSheet(sheet: ISheet): Promise<ISheetWithID>;
 	updateSheet(sheet: ISheetWithID): Promise<void>;
+
+	deleteSheet(id: string): Promise<void>;
 }

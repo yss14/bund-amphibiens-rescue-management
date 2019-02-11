@@ -74,4 +74,10 @@ export class SheetService implements ISheetService {
 			throw new SheetModificationFailedError('update');
 		}
 	}
+
+	public async deleteSheet(id: string): Promise<void> {
+		const objectID = new ObjectID(id);
+
+		await this.dbCollection.deleteOne({ _id: objectID });
+	}
 }
