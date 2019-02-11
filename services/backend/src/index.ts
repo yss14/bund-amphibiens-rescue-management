@@ -1,8 +1,11 @@
 import { isValidNodeEnvironment } from "./utils/env/native-envs";
 import { __PROD__ } from "./utils/env/env-constants";
 import { loadEnvsFromDotenvFile } from "./utils/env/load-envs-from-file";
-import { FormService } from "./services/form-service/FormService";
+import { SheetService } from "./services/sheet-service/SheetService";
 import { makeAndConnectDatabase } from "./database/make-database";
+import { makeExpressServer, makeHTTPServerAndStartExpress } from "./rest/make-express-server";
+import { CustomEnv } from "./utils/env/CustomEnv";
+import { tryParseInt } from "./utils/try-parse";
 
 // enable source map support for error stacks
 require('source-map-support').install();
@@ -20,5 +23,9 @@ if (!__PROD__) {
 (async () => {
 	const { database } = await makeAndConnectDatabase();
 
-	const formService = new FormService(database);
+	const sheetService = new SheetService(database);
+
+	const restPort = tryParseInt(process.env[CustomEnv.REST_PORT] || '3000', 3000);
+	const expressApp = makeExpressServer([]);
+	await makeHTTPServerAndStartExpress(expressApp, restPort);
 })();

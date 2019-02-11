@@ -4,25 +4,25 @@ export enum Cloudiness {
 	Heavy = 'heavy'
 }
 
-export interface IFormTableItem {
+export interface ISheetTableItem {
 	bucketNumber: number;
 	amphibiansKind: string;
 	amount: number;
 }
 
-export interface IForm {
+export interface ISheet {
 	dateOfRecord: Date;
 	secretary: string;
 	temperature: number;
 	cloudiness: Cloudiness;
 	precipitation: boolean;
-	tableItems: IFormTableItem[];
+	tableItems: ISheetTableItem[];
 }
 
-export interface IFormWithID extends IForm {
+export interface ISheetWithID extends ISheet {
 	id: string;
 }
 
-export const isFormWithID = (form: any): form is IFormWithID => {
-	return (<IFormWithID>form).id !== undefined && form._id !== null;
+export const isSheetWithID = (sheet: any): sheet is ISheetWithID => {
+	return (<ISheetWithID>sheet).id !== undefined && sheet._id !== null;
 }
