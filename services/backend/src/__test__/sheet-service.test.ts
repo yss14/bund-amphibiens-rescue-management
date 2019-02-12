@@ -1,91 +1,54 @@
-import { SheetService } from "./SheetService";
-import { makeAndConnectDatabase } from "../../database/make-database";
-import { MongoClient } from "mongodb";
-import { ISheet, Cloudiness, ISheetWithID } from "../../../../shared-types/ISheet";
-import { v4 as uuid } from 'uuid';
-
-const databaseConnections: MongoClient[] = [];
-
-const makeUniqueSheetService = async () => {
-	const randomDBName = uuid().split('-').join('');
-	const { database, connection } = await makeAndConnectDatabase(randomDBName);
-	const sheetService = new SheetService(database);
-
-	databaseConnections.push(connection);
-
-	return sheetService;
-}
-
-const sheetTemplate1: ISheet = {
-	cloudiness: Cloudiness.Heavy,
-	dateOfRecord: new Date(),
-	precipitation: true,
-	secretary: 'Some Dude',
-	temperature: 21,
-	tableItems: [
-		{ amphibiansKind: 'Frosch', bucketNumber: 1, amount: 10 },
-		{ amphibiansKind: 'Kröte (m)', bucketNumber: 9, amount: 2 },
-		{ amphibiansKind: 'Teichmolch', bucketNumber: 3, amount: 5 }
-	]
-}
-
-const sheetTemplate2: ISheet = {
-	cloudiness: Cloudiness.NoClouds,
-	dateOfRecord: new Date(),
-	precipitation: false,
-	secretary: 'Some Other Dude',
-	temperature: -10,
-	tableItems: [
-		{ amphibiansKind: 'Frosch', bucketNumber: 2, amount: 1 },
-		{ amphibiansKind: 'Kröte (m)', bucketNumber: 4, amount: 3 },
-		{ amphibiansKind: 'Teichmolch', bucketNumber: 5, amount: 4 },
-		{ amphibiansKind: 'Kröte (w)', bucketNumber: 7, amount: 8 }
-	]
-}
-
-afterAll(async () => {
-	await Promise.all(databaseConnections.map(dbConn => dbConn.close()));
-});
+import { ISheet, Cloudiness, ISheetWithID } from "../../../shared-types/ISheet";
+import { sheetTemplate1, sheetTemplate2 } from "./utils/sheet-templates";
+import { makeUniqueTestSheetService } from "./utils/make-test-sheet-service";
 
 describe('get sheet', async () => {
 	test('get existing sheet', async () => {
-		const sheetService = await makeUniqueSheetService();
+		const { sheetService, cleanup } = await makeUniqueTestSheetService();
 
 		const createdSheet = await sheetService.createSheet(sheetTemplate1);
 
 		const fetchedSheet = await sheetService.getSheet(createdSheet.id);
 
 		expect(fetchedSheet).toEqual(createdSheet);
+
+		await cleanup();
 	});
 
 	test('get not-existing sheet', async () => {
-		const sheetService = await makeUniqueSheetService();
+		const { sheetService, cleanup } = await makeUniqueTestSheetService();
 
 		const notExistingID = '5c6082cea068a184fc11aaaa';
 
 		await expect(sheetService.getSheet(notExistingID))
 			.rejects.toThrow(`Sheet with id ${notExistingID} not found in database`);
+
+		await cleanup();
 	});
 
 	test('get sheet by invalid id', async () => {
-		const sheetService = await makeUniqueSheetService();
+		const { sheetService, cleanup } = await makeUniqueTestSheetService();
 
 		await expect(sheetService.getSheet('invalidid'))
 			.rejects.toThrow('Argument passed in must be a single String of 12 bytes or a string of 24 hex characters');
+
+		await cleanup();
 	});
 });
 
 describe('get sheets', () => {
 	test('get sheets of empty database', async () => {
-		const sheetService = await makeUniqueSheetService();
+		const { sheetService, cleanup } = await makeUniqueTestSheetService();
 
 		const sheets = await sheetService.getAllSheets();
 
 		expect(sheets).toEqual([]);
+
+		await cleanup();
 	});
 
 	test('get sheets', async () => {
-		const sheetService = await makeUniqueSheetService();
+		const { sheetService, cleanup } = await makeUniqueTestSheetService();
 
 		const createdSheet1 = await sheetService.createSheet(sheetTemplate1);
 		const createdSheet2 = await sheetService.createSheet(sheetTemplate2);
@@ -96,12 +59,14 @@ describe('get sheets', () => {
 			createdSheet1,
 			createdSheet2
 		]);
+
+		await cleanup();
 	});
 });
 
 describe('update sheet', () => {
 	test('update meta data and add new table items', async () => {
-		const sheetService = await makeUniqueSheetService();
+		const { sheetService, cleanup } = await makeUniqueTestSheetService();
 
 		const oldSheet: ISheet = sheetTemplate1;
 		const oldSheetCreated = await sheetService.createSheet(oldSheet);
@@ -117,10 +82,12 @@ describe('update sheet', () => {
 		const newSheetFetched = await sheetService.getSheet(newSheet.id);
 
 		expect(newSheetFetched).toEqual(newSheet);
+
+		await cleanup();
 	});
 
 	test('update meta data and replace whole table items', async () => {
-		const sheetService = await makeUniqueSheetService();
+		const { sheetService, cleanup } = await makeUniqueTestSheetService();
 
 		const oldSheet: ISheet = sheetTemplate1;
 		const oldSheetCreated = await sheetService.createSheet(oldSheet);
@@ -136,12 +103,14 @@ describe('update sheet', () => {
 		const newSheetFetched = await sheetService.getSheet(newSheet.id);
 
 		expect(newSheetFetched).toEqual(newSheet);
+
+		await cleanup();
 	});
 });
 
 describe('delete sheet', () => {
 	test('delete existing sheet', async () => {
-		const sheetService = await makeUniqueSheetService();
+		const { sheetService, cleanup } = await makeUniqueTestSheetService();
 
 		const createdSheet = await sheetService.createSheet(sheetTemplate1);
 
@@ -149,13 +118,17 @@ describe('delete sheet', () => {
 
 		await expect(sheetService.getSheet(createdSheet.id))
 			.rejects.toThrow(`Sheet with id ${createdSheet.id} not found in database`);
+
+		await cleanup();
 	});
 
 	test('delete not-existing sheet', async () => {
-		const sheetService = await makeUniqueSheetService();
+		const { sheetService, cleanup } = await makeUniqueTestSheetService();
 
 		const notExistingID = '5c6082cea068a184fc11aaaa';
 
 		await sheetService.deleteSheet(notExistingID);
+
+		await cleanup();
 	});
 });

@@ -4,7 +4,7 @@ import * as Cors from 'cors';
 import * as Morgan from 'morgan';
 import * as http from 'http';
 
-export const makeExpressServer = (routers: Express.Router[]) => {
+export const makeExpressServer = (...routers: Express.Router[]) => {
 	const expressApp = Express();
 
 	expressApp.use(Cors());

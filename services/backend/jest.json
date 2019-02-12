@@ -12,7 +12,7 @@
 		"jsx",
 		"json"
 	],
-	"globalSetup": "./src/__test__/global-setup.ts",
+	"globalSetup": "./src/__test__/utils/global-setup.ts",
 	"collectCoverage": false,
 	"collectCoverageFrom": [
 		"**/*.ts",
