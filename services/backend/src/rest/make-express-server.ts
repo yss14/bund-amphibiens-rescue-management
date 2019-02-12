@@ -3,6 +3,7 @@ import * as BodyParser from 'body-parser';
 import * as Cors from 'cors';
 import * as Morgan from 'morgan';
 import * as http from 'http';
+import { HTTPStatusCode } from "../types/HTTPStatusCode";
 
 export const makeExpressServer = (...routers: Express.Router[]) => {
 	const expressApp = Express();
@@ -14,6 +15,12 @@ export const makeExpressServer = (...routers: Express.Router[]) => {
 	expressApp.disable('x-powered-by');
 
 	expressApp.use(routers);
+
+	expressApp.use((err: Error, req: Express.Request, res: Express.Response, next: Express.NextFunction) => {
+		console.error(err);
+
+		res.status(HTTPStatusCode.INTERNAL_SERVER_ERROR).send(err.message).end();
+	});
 
 	return expressApp;
 }

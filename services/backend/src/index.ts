@@ -7,7 +7,6 @@ import { makeExpressServer, makeHTTPServerAndStartExpress } from "./rest/make-ex
 import { CustomEnv } from "./utils/env/CustomEnv";
 import { tryParseInt } from "./utils/try-parse";
 
-// enable source map support for error stacks
 require('source-map-support').install();
 
 const nodeEnv = process.env.NODE_ENV;

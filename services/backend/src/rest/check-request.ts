@@ -16,7 +16,3 @@ export const CheckRequest = <A, B>(checker: Checker<A, B>) => <Request>(handler:
 		handler(<Request & B><unknown>request, response, next);
 	};
 };
-
-export interface CheckedExpressRequest<M> extends Express.Request {
-	body: M extends Checker<infer A, infer B> ? B : never;
-}

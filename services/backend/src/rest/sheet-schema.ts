@@ -1,5 +1,5 @@
-import { Keys, TypeString, TypeNumber, TypeBoolean, TypeEnumString, Items, TypeCheck } from "../utils/checker";
-import { ISheet, Cloudiness, ISheetTableItem, ISheetWithID } from "../../../shared-types/ISheet";
+import { Keys, TypeString, TypeNumber, TypeBoolean, TypeEnumString, Items, TypeCheck, KeysPartial } from "../utils/checker";
+import { Cloudiness, ISheetTableItem, ISheetWithID, ISheet } from "../../../shared-types/ISheet";
 import * as moment from 'moment';
 
 export const sheetTableItemSchema = Keys<ISheetTableItem>({
@@ -9,7 +9,7 @@ export const sheetTableItemSchema = Keys<ISheetTableItem>({
 });
 
 const sharedSheetSchema = {
-	dateOfRecord: TypeCheck((value: any): value is Date => moment(value).isValid()),
+	dateOfRecord: TypeCheck((value: any): value is Date => moment(value, moment.ISO_8601).isValid()),
 	secretary: TypeString,
 	temperature: TypeNumber,
 	cloudiness: TypeEnumString(Cloudiness),
@@ -17,9 +17,13 @@ const sharedSheetSchema = {
 	tableItems: Items(sheetTableItemSchema)
 };
 
-export const sheetSchema = Keys<ISheet>(sharedSheetSchema);
+export const sheetSchema = KeysPartial({
+	body: Keys<ISheet>(sharedSheetSchema)
+});
 
-export const sheetSchemaWithID = Keys<ISheetWithID>({
-	id: TypeString,
-	...sharedSheetSchema
+export const sheetSchemaWithID = KeysPartial({
+	body: Keys<ISheetWithID>({
+		...sharedSheetSchema,
+		id: TypeString
+	})
 });
