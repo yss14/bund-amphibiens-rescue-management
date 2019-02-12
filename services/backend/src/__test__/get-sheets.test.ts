@@ -1,6 +1,6 @@
 import { makeUniqueTestSheetService } from "./utils/make-test-sheet-service";
 import { makeExpressServer } from "../rest/make-express-server";
-import { makeDefaultRouter } from "../rest/make-default-router";
+import { makeSheetsRouter } from "../rest/make-sheets-router";
 import { sheetTemplate1, sheetTemplate2 } from "./utils/sheet-templates";
 import supertest = require("supertest");
 import { HTTPStatusCode } from "../types/HTTPStatusCode";
@@ -15,7 +15,7 @@ afterAll(async () => {
 test('get list of existing sheets', async () => {
 	const { sheetService, cleanup } = await makeUniqueTestSheetService();
 	cleanUpHooks.push(cleanup);
-	const expressApp = makeExpressServer(makeDefaultRouter(sheetService));
+	const expressApp = makeExpressServer(makeSheetsRouter(sheetService));
 
 	const createdSheet1 = await sheetService.createSheet(sheetTemplate1);
 	const createdSheet2 = await sheetService.createSheet(sheetTemplate2);
@@ -31,7 +31,7 @@ test('get list of existing sheets', async () => {
 test('get empty list of sheets', async () => {
 	const { sheetService, cleanup } = await makeUniqueTestSheetService();
 	cleanUpHooks.push(cleanup);
-	const expressApp = makeExpressServer(makeDefaultRouter(sheetService));
+	const expressApp = makeExpressServer(makeSheetsRouter(sheetService));
 
 	const httpResponse = await supertest(expressApp)
 		.get(`/sheets`)

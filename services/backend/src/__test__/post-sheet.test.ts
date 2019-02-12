@@ -1,6 +1,6 @@
 import { makeUniqueTestSheetService } from "./utils/make-test-sheet-service";
 import { makeExpressServer } from "../rest/make-express-server";
-import { makeDefaultRouter } from "../rest/make-default-router";
+import { makeSheetsRouter } from "../rest/make-sheets-router";
 import { sheetTemplate1 } from "./utils/sheet-templates";
 import supertest = require("supertest");
 import { HTTPStatusCode } from "../types/HTTPStatusCode";
@@ -21,7 +21,7 @@ const expectCheckerFail = (httpResponse: supertest.Response, property: string) =
 }
 
 const executeCreateSheetWithInvalidProperty = async (property: keyof ISheet, value: any) => {
-	const expressApp = makeExpressServer(makeDefaultRouter(null as any)); // don't need sheet service
+	const expressApp = makeExpressServer(makeSheetsRouter(null as any)); // don't need sheet service
 
 	const sheet: ISheet = { ...sheetTemplate1, [property]: value as any };
 
@@ -33,7 +33,7 @@ const executeCreateSheetWithInvalidProperty = async (property: keyof ISheet, val
 }
 
 const executeCreateSheetWithInvalidTableItemProperty = async (property: keyof ISheetTableItem, index: number, value: any) => {
-	const expressApp = makeExpressServer(makeDefaultRouter(null as any)); // don't need sheet service
+	const expressApp = makeExpressServer(makeSheetsRouter(null as any)); // don't need sheet service
 
 	const sheet: ISheet = {
 		...sheetTemplate1,
@@ -51,7 +51,7 @@ const executeCreateSheetWithInvalidTableItemProperty = async (property: keyof IS
 test('create valid sheet', async () => {
 	const { sheetService, cleanup } = await makeUniqueTestSheetService();
 	cleanUpHooks.push(cleanup);
-	const expressApp = makeExpressServer(makeDefaultRouter(sheetService));
+	const expressApp = makeExpressServer(makeSheetsRouter(sheetService));
 
 	const httpResponse = await supertest(expressApp)
 		.post(`/sheets`)

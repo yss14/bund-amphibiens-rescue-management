@@ -1,6 +1,6 @@
 import { makeUniqueTestSheetService } from "./utils/make-test-sheet-service";
 import { makeExpressServer } from "../rest/make-express-server";
-import { makeDefaultRouter } from "../rest/make-default-router";
+import { makeSheetsRouter } from "../rest/make-sheets-router";
 import { sheetTemplate1 } from "./utils/sheet-templates";
 import supertest = require("supertest");
 import { HTTPStatusCode } from "../types/HTTPStatusCode";
@@ -14,7 +14,7 @@ afterAll(async () => {
 test('delete existing sheet', async () => {
 	const { sheetService, cleanup } = await makeUniqueTestSheetService();
 	cleanUpHooks.push(cleanup);
-	const expressApp = makeExpressServer(makeDefaultRouter(sheetService));
+	const expressApp = makeExpressServer(makeSheetsRouter(sheetService));
 
 	const createdSheet = await sheetService.createSheet(sheetTemplate1);
 
@@ -29,7 +29,7 @@ test('delete existing sheet', async () => {
 test('delete not-existing sheet', async () => {
 	const { sheetService, cleanup } = await makeUniqueTestSheetService();
 	cleanUpHooks.push(cleanup);
-	const expressApp = makeExpressServer(makeDefaultRouter(sheetService));
+	const expressApp = makeExpressServer(makeSheetsRouter(sheetService));
 
 	const notExistingID = '5c6082cea068a184fc11aaaa';
 
@@ -43,7 +43,7 @@ test('delete not-existing sheet', async () => {
 test('delete sheet by invalid shareID', async () => {
 	const { sheetService, cleanup } = await makeUniqueTestSheetService();
 	cleanUpHooks.push(cleanup);
-	const expressApp = makeExpressServer(makeDefaultRouter(sheetService));
+	const expressApp = makeExpressServer(makeSheetsRouter(sheetService));
 
 	const httpResponse = await supertest(expressApp)
 		.delete(`/sheets/invalidid`)

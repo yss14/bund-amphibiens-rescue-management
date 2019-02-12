@@ -6,6 +6,7 @@ import { makeAndConnectDatabase } from "./database/make-database";
 import { makeExpressServer, makeHTTPServerAndStartExpress } from "./rest/make-express-server";
 import { CustomEnv } from "./utils/env/CustomEnv";
 import { tryParseInt } from "./utils/try-parse";
+import { makeSheetsRouter } from "./rest/make-sheets-router";
 
 require('source-map-support').install();
 
@@ -24,7 +25,11 @@ if (!__PROD__) {
 
 	const sheetService = new SheetService(database);
 
+	const sheetsRouter = makeSheetsRouter(sheetService);
+	const expressApp = makeExpressServer(sheetsRouter);
+
 	const restPort = tryParseInt(process.env[CustomEnv.REST_PORT] || '3000', 3000);
-	const expressApp = makeExpressServer();
 	await makeHTTPServerAndStartExpress(expressApp, restPort);
+
+	console.info(`Server is running of port ${restPort}`);
 })();

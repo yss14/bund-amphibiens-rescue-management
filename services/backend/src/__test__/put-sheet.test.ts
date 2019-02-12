@@ -1,6 +1,6 @@
 import { makeUniqueTestSheetService } from "./utils/make-test-sheet-service";
 import { makeExpressServer } from "../rest/make-express-server";
-import { makeDefaultRouter } from "../rest/make-default-router";
+import { makeSheetsRouter } from "../rest/make-sheets-router";
 import { sheetTemplate1, sheetTemplate2 } from "./utils/sheet-templates";
 import supertest = require("supertest");
 import { HTTPStatusCode } from "../types/HTTPStatusCode";
@@ -16,7 +16,7 @@ afterAll(async () => {
 test('put sheet update meta data and add new table items', async () => {
 	const { sheetService, cleanup } = await makeUniqueTestSheetService();
 	cleanUpHooks.push(cleanup);
-	const expressApp = makeExpressServer(makeDefaultRouter(sheetService));
+	const expressApp = makeExpressServer(makeSheetsRouter(sheetService));
 
 	const oldSheet: ISheet = sheetTemplate1;
 	const oldSheetCreated = await sheetService.createSheet(oldSheet);
@@ -42,7 +42,7 @@ test('put sheet update meta data and add new table items', async () => {
 test('update meta data and replace whole table items', async () => {
 	const { sheetService, cleanup } = await makeUniqueTestSheetService();
 	cleanUpHooks.push(cleanup);
-	const expressApp = makeExpressServer(makeDefaultRouter(sheetService));
+	const expressApp = makeExpressServer(makeSheetsRouter(sheetService));
 
 	const oldSheet: ISheet = sheetTemplate1;
 	const oldSheetCreated = await sheetService.createSheet(oldSheet);

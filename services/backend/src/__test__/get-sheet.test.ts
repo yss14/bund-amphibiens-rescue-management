@@ -1,4 +1,4 @@
-import { makeDefaultRouter } from "../rest/make-default-router";
+import { makeSheetsRouter } from "../rest/make-sheets-router";
 import { makeExpressServer } from "../rest/make-express-server";
 import * as supertest from "supertest";
 import { sheetTemplate1 } from "./utils/sheet-templates";
@@ -15,7 +15,7 @@ afterAll(async () => {
 test('get existing sheet', async () => {
 	const { sheetService, cleanup } = await makeUniqueTestSheetService();
 	cleanUpHooks.push(cleanup);
-	const expressApp = makeExpressServer(makeDefaultRouter(sheetService));
+	const expressApp = makeExpressServer(makeSheetsRouter(sheetService));
 
 	const createdSheet = await sheetService.createSheet(sheetTemplate1);
 
@@ -30,7 +30,7 @@ test('get existing sheet', async () => {
 test('get sheet by invalid sheetID', async () => {
 	const { sheetService, cleanup } = await makeUniqueTestSheetService();
 	cleanUpHooks.push(cleanup);
-	const expressApp = makeExpressServer(makeDefaultRouter(sheetService));
+	const expressApp = makeExpressServer(makeSheetsRouter(sheetService));
 
 	const httpResponse = await supertest(expressApp)
 		.get(`/sheets/42`)
@@ -42,7 +42,7 @@ test('get sheet by invalid sheetID', async () => {
 test('get sheet by not-existing sheetID', async () => {
 	const { sheetService, cleanup } = await makeUniqueTestSheetService();
 	cleanUpHooks.push(cleanup);
-	const expressApp = makeExpressServer(makeDefaultRouter(sheetService));
+	const expressApp = makeExpressServer(makeSheetsRouter(sheetService));
 
 	const notExistingID = '5c6082cea068a184fc11aaaa';
 
