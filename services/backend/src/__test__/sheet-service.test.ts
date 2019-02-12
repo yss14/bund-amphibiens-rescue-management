@@ -18,6 +18,7 @@ describe('get sheet', async () => {
 		const fetchedSheet = await sheetService.getSheet(createdSheet.id);
 
 		expect(fetchedSheet).toEqual(createdSheet);
+		expect(fetchedSheet).not.toHaveProperty('_id');
 	});
 
 	test('get not-existing sheet', async () => {
@@ -62,6 +63,8 @@ describe('get sheets', () => {
 			createdSheet1,
 			createdSheet2
 		]);
+		expect(sheets[0]).not.toHaveProperty('_id');
+		expect(sheets[1]).not.toHaveProperty('_id');
 	});
 });
 
@@ -84,6 +87,7 @@ describe('update sheet', () => {
 		const newSheetFetched = await sheetService.getSheet(newSheet.id);
 
 		expect(newSheetFetched).toEqual(newSheet);
+		expect(newSheetFetched).not.toHaveProperty('_id');
 	});
 
 	test('update meta data and replace whole table items', async () => {
@@ -104,6 +108,7 @@ describe('update sheet', () => {
 		const newSheetFetched = await sheetService.getSheet(newSheet.id);
 
 		expect(newSheetFetched).toEqual(newSheet);
+		expect(newSheetFetched).not.toHaveProperty('_id');
 	});
 });
 
