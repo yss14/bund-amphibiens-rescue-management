@@ -26,6 +26,6 @@ if (!__PROD__) {
 	const sheetService = new SheetService(database);
 
 	const restPort = tryParseInt(process.env[CustomEnv.REST_PORT] || '3000', 3000);
-	const expressApp = makeExpressServer([]);
+	const expressApp = makeExpressServer();
 	await makeHTTPServerAndStartExpress(expressApp, restPort);
 })();

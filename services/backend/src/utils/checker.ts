@@ -1,5 +1,3 @@
-import moment = require("moment");
-
 type TypeNames = "string" | "number" | "boolean" | "undefined" | "function" | "object";
 type Types = string | number | boolean | undefined | Function | object | null;
 /*
