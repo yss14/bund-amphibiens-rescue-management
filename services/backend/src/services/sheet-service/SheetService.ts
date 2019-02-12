@@ -30,9 +30,7 @@ export class SheetService implements ISheetService {
 		const dbResult = await this.dbCollection.find({ _id: objectID }).toArray();
 
 		if (dbResult.length > 0) {
-			const sheetFromDB = dbResult[0];
-
-			return { ...sheetFromDB, id: sheetFromDB._id.toHexString() };
+			return this.makeSheetObjectFromDBResult(dbResult[0]);
 		}
 
 		throw new SheetNotFoundError(id);
@@ -41,7 +39,7 @@ export class SheetService implements ISheetService {
 	public async getAllSheets(): Promise<ISheetWithID[]> {
 		const dbResults = await this.dbCollection.find().toArray();
 
-		return dbResults.map(dbResult => ({ ...dbResult, id: dbResult._id.toHexString() }));
+		return dbResults.map(this.makeSheetObjectFromDBResult);
 
 	}
 
@@ -49,10 +47,7 @@ export class SheetService implements ISheetService {
 		const dbResult = await this.dbCollection.insertOne(sheet as any);
 
 		if (dbResult.insertedCount === 1 && dbResult.insertedId) {
-			return {
-				...sheet,
-				id: dbResult.insertedId.toHexString()
-			}
+			return this.makeSheetObjectFromDBResult(sheet as ISheetDBResult); // mongo does some weird side effects
 		} else {
 			throw new SheetModificationFailedError('insert');
 		}
@@ -78,6 +73,19 @@ export class SheetService implements ISheetService {
 	public async deleteSheet(id: string): Promise<void> {
 		const objectID = new ObjectID(id);
 
-		await this.dbCollection.deleteOne({ _id: objectID });
+		const dbResult = await this.dbCollection.deleteOne({ _id: objectID });
+
+		if (dbResult.deletedCount !== 1) {
+			throw new SheetNotFoundError(id);
+		}
+	}
+
+	private makeSheetObjectFromDBResult(sheetFromDB: ISheetDBResult): ISheetWithID {
+		const { _id, ...sheetWithoutID } = sheetFromDB;
+
+		return {
+			...sheetWithoutID,
+			id: sheetFromDB._id.toHexString()
+		}
 	}
 }

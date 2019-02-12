@@ -126,6 +126,7 @@ describe('delete sheet', () => {
 
 		const notExistingID = '5c6082cea068a184fc11aaaa';
 
-		await sheetService.deleteSheet(notExistingID);
+		await expect(sheetService.deleteSheet(notExistingID))
+			.rejects.toThrow(`Sheet with id ${notExistingID} not found in database`);
 	});
 });

@@ -4,6 +4,7 @@ import * as Cors from 'cors';
 import * as Morgan from 'morgan';
 import * as http from 'http';
 import { HTTPStatusCode } from "../types/HTTPStatusCode";
+import { __TEST__ } from "../utils/env/env-constants";
 
 export const makeExpressServer = (...routers: Express.Router[]) => {
 	const expressApp = Express();
@@ -11,8 +12,11 @@ export const makeExpressServer = (...routers: Express.Router[]) => {
 	expressApp.use(Cors());
 	expressApp.use(BodyParser.json({ strict: false }));
 	expressApp.use(BodyParser.urlencoded({ extended: true }));
-	expressApp.use(Morgan('dev'));
 	expressApp.disable('x-powered-by');
+
+	if (!__TEST__) {
+		expressApp.use(Morgan('dev'));
+	}
 
 	expressApp.use(routers);
 

@@ -4,6 +4,7 @@ import { makeGetSheetsRoute } from "./routes/get-sheets";
 import { makeGetSheetRoute } from "./routes/get-sheet";
 import { makePostSheetRoute } from "./routes/post-sheet";
 import { makeDeleteSheetRoute } from "./routes/delete-sheet";
+import { makePutSheetRoute } from "./routes/put-sheet";
 
 export const makeDefaultRouter = (sheetService: SheetService) => {
 	const router = Express.Router();
@@ -11,7 +12,7 @@ export const makeDefaultRouter = (sheetService: SheetService) => {
 	router.get('/sheets', makeGetSheetsRoute(sheetService));
 	router.get('/sheets/:sheetID', makeGetSheetRoute(sheetService));
 	router.post('/sheets', makePostSheetRoute(sheetService));
-	//router.put('/sheets');
+	router.put('/sheets/:sheetID', makePutSheetRoute(sheetService));
 	router.delete('/sheets/:sheetID', makeDeleteSheetRoute(sheetService));
 
 	return router;
