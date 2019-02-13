@@ -1,7 +1,6 @@
 import { ISheetsSchema } from "./sheets.schema";
 import { SheetsAction } from "./sheets.actions";
 import * as constants from './sheets.constants';
-import { bindActionCreators } from "redux";
 
 const defaultState: ISheetsSchema = {
 	data: [],

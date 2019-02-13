@@ -1,14 +1,11 @@
 import { combineReducers, compose, Store, createStore, applyMiddleware } from "redux";
 import { IStoreSchema } from "./store.schema";
 import { sheetsReducer } from "./sheets/sheets.reducer";
-import { SheetsAction } from "./sheets/sheets.actions";
 import thunk from 'redux-thunk';
 
 interface IWindowWithReduxDevTools extends Window {
 	__REDUX_DEVTOOLS_EXTENSION_COMPOSE__: typeof compose;
 }
-
-type Actions = SheetsAction;
 
 const rootReducer = combineReducers<IStoreSchema>({
 	sheets: sheetsReducer

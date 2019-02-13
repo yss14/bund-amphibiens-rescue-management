@@ -1,12 +1,13 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { ISheetWithID } from '../../../../shared-types/ISheet';
-import { ListSubheader, ListItem, Avatar, ListItemText } from '@material-ui/core';
+import { ListSubheader, ListItem, ListItemText } from '@material-ui/core';
 import moment from 'moment';
 import styled from 'styled-components';
 
 interface ISheetListItemProps {
 	sheet: ISheetWithID;
 	isSameDayAsPrevItem: boolean;
+	onClick: () => void;
 }
 
 const DayIcon = styled.div`
@@ -27,14 +28,14 @@ const DayIcon = styled.div`
     background-color: #bdbdbd;
 `;
 
-export const SheetListItem: React.FunctionComponent<ISheetListItemProps> = ({ sheet, isSameDayAsPrevItem }) => {
+export const SheetListItem: React.FunctionComponent<ISheetListItemProps> = ({ sheet, isSameDayAsPrevItem, onClick }) => {
 	const isToday = moment().isSame(moment(sheet.dateOfRecord), 'day');
 	const subheaderTitle = isToday ? 'Today' : moment(sheet.dateOfRecord).format('dddd DD.MM.YYYY');
 
 	return (
 		<React.Fragment key={sheet.id}>
 			{!isSameDayAsPrevItem && <ListSubheader style={{ lineHeight: '40px', backgroundColor: 'white' }}>{subheaderTitle}</ListSubheader>}
-			<ListItem button>
+			<ListItem button onClick={onClick}>
 				<DayIcon>{moment(sheet.dateOfRecord).format('dd')}</DayIcon>
 				<ListItemText primary={sheet.secretary} secondary={sheet.secretary} />
 			</ListItem>

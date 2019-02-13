@@ -4,8 +4,8 @@ import { createReduxStore } from "./redux/create-store";
 import { Provider } from "react-redux";
 import { Router, Route, Switch } from "react-router";
 import { NotFound } from "./views/other/NotFound";
-import { SheetList } from './views/sheets/SheetList';
 import { createGlobalStyle } from 'styled-components';
+import { SheetRouter } from './views/routers/SheetRouter';
 
 const history = createBrowserHistory();
 const store = createReduxStore();
@@ -23,7 +23,7 @@ export const Root = () => (
 		<Provider store={store}>
 			<Router history={history}>
 				<Switch>
-					<Route path="/sheets" component={SheetList} />
+					<Route path="/sheets" component={SheetRouter} />
 					<Route component={NotFound} />
 				</Switch>
 			</Router>
