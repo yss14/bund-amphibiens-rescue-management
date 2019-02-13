@@ -1,3 +1,6 @@
-import { ISheet } from '../../../../shared-types/ISheet';
+import { ISheetWithID } from '../../../../shared-types/ISheet';
 
-export type ISheetsSchema = ISheet[];
+export interface ISheetsSchema {
+	data: ISheetWithID[];
+	isFetching: boolean;
+}

@@ -4,19 +4,29 @@ import { createReduxStore } from "./redux/create-store";
 import { Provider } from "react-redux";
 import { Router, Route, Switch } from "react-router";
 import { NotFound } from "./views/other/NotFound";
+import { SheetList } from './views/sheets/SheetList';
+import { createGlobalStyle } from 'styled-components';
 
 const history = createBrowserHistory();
 const store = createReduxStore();
 
-const Hello = () => (<div>Hello</div>);
+const GlobalStyle = createGlobalStyle`
+	html, body {
+		margin: 0px;
+		padding: 0px;
+	}
+`;
 
 export const Root = () => (
-	<Provider store={store}>
-		<Router history={history}>
-			<Switch>
-				<Route path="/" component={Hello} />
-				<Route component={NotFound} />
-			</Switch>
-		</Router>
-	</Provider>
+	<React.Fragment>
+		<GlobalStyle />
+		<Provider store={store}>
+			<Router history={history}>
+				<Switch>
+					<Route path="/sheets" component={SheetList} />
+					<Route component={NotFound} />
+				</Switch>
+			</Router>
+		</Provider>
+	</React.Fragment>
 );
