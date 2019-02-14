@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { DispatchPropThunk } from '../../types/DispatchPropThunk';
-import { SheetsAction, fetchShares } from '../../redux/sheets/sheets.actions';
+import { SheetsAction } from '../../redux/sheets/sheets.actions';
 import { IStoreSchema } from '../../redux/store.schema';
 import { connect } from 'react-redux';
 import { ISheetWithID } from '../../../../shared-types/ISheet';
-import { SheetsAPI } from '../../api/sheets-api';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -19,12 +18,6 @@ interface ISheetListProps extends DispatchPropThunk<IStoreSchema, SheetsAction>,
 }
 
 const SheetListComp: React.FunctionComponent<ISheetListProps> = ({ dispatch, sheets, match, history }) => {
-
-	useEffect(() => {
-		if (sheets.length === 0) {
-			dispatch(fetchShares(new SheetsAPI()));
-		}
-	}, []);
 
 	const sortSheets = (lhs: ISheetWithID, rhs: ISheetWithID) => {
 		return moment(rhs.dateOfRecord).valueOf() - moment(lhs.dateOfRecord).valueOf();
