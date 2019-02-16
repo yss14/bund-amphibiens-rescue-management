@@ -10,6 +10,8 @@
 		"@types/node": "11.9.0",
 		"@types/react": "16.8.2",
 		"@types/react-dom": "16.8.0",
+		"lodash.groupby": "^4.6.0",
+		"lodash.uniqby": "^4.7.0",
 		"material-ui-pickers": "^2.2.1",
 		"moment": "^2.24.0",
 		"react": "^16.8.1",
@@ -39,6 +41,8 @@
 		"not op_mini all"
 	],
 	"devDependencies": {
+		"@types/lodash.groupby": "^4.6.5",
+		"@types/lodash.uniqby": "^4.7.5",
 		"@types/moment": "^2.13.0",
 		"@types/react-redux": "^7.0.1",
 		"@types/react-router": "^4.4.3",

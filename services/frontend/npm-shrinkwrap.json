@@ -1093,6 +1093,30 @@
         "indefinite-observable": "^1.0.1"
       }
     },
+    "@types/lodash": {
+      "version": "4.14.121",
+      "resolved": "https://registry.npmjs.org/@types/lodash/-/lodash-4.14.121.tgz",
+      "integrity": "sha512-ORj7IBWj13iYufXt/VXrCNMbUuCTJfhzme5kx9U/UtcIPdJYuvPDUAlHlbNhz/8lKCLy9XGIZnGrqXOtQbPGoQ==",
+      "dev": true
+    },
+    "@types/lodash.groupby": {
+      "version": "4.6.5",
+      "resolved": "https://registry.npmjs.org/@types/lodash.groupby/-/lodash.groupby-4.6.5.tgz",
+      "integrity": "sha512-+UZCMvmAFxpPsQaTXQn75QiT6rBOZkWNLbMKOTdHaTuI8PH5OIS2phWD7o/9YYp8Kyk/RPltibO4eLKjOBhJxQ==",
+      "dev": true,
+      "requires": {
+        "@types/lodash": "*"
+      }
+    },
+    "@types/lodash.uniqby": {
+      "version": "4.7.5",
+      "resolved": "https://registry.npmjs.org/@types/lodash.uniqby/-/lodash.uniqby-4.7.5.tgz",
+      "integrity": "sha512-h0Qw5JG1ynapPC2Eee0dyoMmG/s7DhGiGOqRoFWs5qL9eU0NnwVwS2hqFrpvzDCh6zA8Qmtpm4FZHiEBCD/+Nw==",
+      "dev": true,
+      "requires": {
+        "@types/lodash": "*"
+      }
+    },
     "@types/moment": {
       "version": "2.13.0",
       "resolved": "https://registry.npmjs.org/@types/moment/-/moment-2.13.0.tgz",
@@ -9711,6 +9735,11 @@
       "resolved": "https://registry.npmjs.org/lodash.camelcase/-/lodash.camelcase-4.3.0.tgz",
       "integrity": "sha1-soqmKIorn8ZRA1x3EfZathkDMaY="
     },
+    "lodash.groupby": {
+      "version": "4.6.0",
+      "resolved": "https://registry.npmjs.org/lodash.groupby/-/lodash.groupby-4.6.0.tgz",
+      "integrity": "sha1-Cwih3PaDl8OXhVwyOXg4Mt90A9E="
+    },
     "lodash.memoize": {
       "version": "4.1.2",
       "resolved": "https://registry.npmjs.org/lodash.memoize/-/lodash.memoize-4.1.2.tgz",
@@ -9747,6 +9776,11 @@
       "version": "4.5.0",
       "resolved": "https://registry.npmjs.org/lodash.uniq/-/lodash.uniq-4.5.0.tgz",
       "integrity": "sha1-0CJTc662Uq3BvILklFM5qEJ1R3M="
+    },
+    "lodash.uniqby": {
+      "version": "4.7.0",
+      "resolved": "https://registry.npmjs.org/lodash.uniqby/-/lodash.uniqby-4.7.0.tgz",
+      "integrity": "sha1-2ZwHpmnp5tJOE2Lf4mbGdhavEwI="
     },
     "loglevel": {
       "version": "1.6.1",
