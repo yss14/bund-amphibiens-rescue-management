@@ -6,16 +6,19 @@ import moment = require("moment");
 
 export const seedDatabase = async (sheetService: SheetService) => {
 	const existingSheets = await sheetService.getAllSheets();
+	const remainingInsertCount = 50 - existingSheets.length;
 
-	await Promise.all(new Array(50 - existingSheets.length).fill(undefined).map((_, idx) => {
-		const sheet: ISheet = {
-			...sheetTemplate1,
-			secretary: faker.name.firstName() + ' ' + faker.name.lastName(),
-			precipitation: Math.random() > 0.5,
-			temperature: Math.floor(Math.random() * 40) - 10,
-			dateOfRecord: moment().subtract(idx + 2, 'days').toDate()
-		}
+	if (remainingInsertCount > 0) {
+		await Promise.all(new Array(remainingInsertCount).fill(undefined).map((_, idx) => {
+			const sheet: ISheet = {
+				...sheetTemplate1,
+				secretary: faker.name.firstName() + ' ' + faker.name.lastName(),
+				precipitation: Math.random() > 0.5,
+				temperature: Math.floor(Math.random() * 40) - 10,
+				dateOfRecord: moment().subtract(idx + 2, 'days').toDate()
+			}
 
-		return sheetService.createSheet(sheet);
-	}));
+			return sheetService.createSheet(sheet);
+		}));
+	}
 }

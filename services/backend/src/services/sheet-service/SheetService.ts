@@ -65,7 +65,7 @@ export class SheetService implements ISheetService {
 			}
 		);
 
-		if (dbResult.modifiedCount !== 1) {
+		if (dbResult.matchedCount !== 1) {
 			throw new SheetModificationFailedError('update');
 		}
 	}

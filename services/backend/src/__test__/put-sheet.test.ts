@@ -64,3 +64,23 @@ test('update meta data and replace whole table items', async () => {
 	const newSheetFetched = await sheetService.getSheet(newSheet.id);
 	expect(newSheetFetched).toEqual(jsonParsedObject(newSheet));
 });
+
+test('update sheet with no diff', async () => {
+	const { sheetService, cleanup } = await makeUniqueTestSheetService();
+	cleanUpHooks.push(cleanup);
+	const expressApp = makeExpressServer(makeSheetsRouter(sheetService));
+
+	const oldSheet: ISheet = sheetTemplate1;
+	const oldSheetCreated = await sheetService.createSheet(oldSheet);
+
+	const newSheet: ISheetWithID = {
+		...oldSheetCreated
+	};
+
+	const httpResponse = await supertest(expressApp)
+		.put(`/sheets/${oldSheetCreated.id}`)
+		.send(newSheet);
+
+	expect(httpResponse.status).toBe(HTTPStatusCode.NO_CONTENT);
+	expect(httpResponse.body).toEqual({});
+});
