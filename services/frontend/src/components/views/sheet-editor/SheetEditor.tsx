@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { withRouter, RouteComponentProps, Redirect } from 'react-router';
 import { ISheetWithID, ISheet } from '../../../../../shared-types/ISheet';
 import { IStoreSchema } from '../../../redux/store.schema';
@@ -9,8 +9,8 @@ import { SheetEditorPane } from './SheetEditorPane';
 import { SheetTableItemsEditor } from './SheetTableItemsEditor';
 import { DispatchPropThunk } from '../../../types/DispatchPropThunk';
 import { SheetSaveAction, saveSheet } from '../../../redux/sheets/sheets.actions';
-import { SheetsAPI } from '../../../api/sheets-api';
 import { Snackbar } from '@material-ui/core';
+import { APIContext } from '../../../Root';
 
 export type SheetPropertyChangeCallback = <T extends ISheet, K extends keyof ISheet>(propertyName: K, newValue: T[K]) => void;
 export type SheetTableItemChangeCallback = (bucketNumber: number, amphibiensKind: string, newAmount: number) => void;
@@ -72,8 +72,10 @@ const SheetEditorComp: React.FunctionComponent<ISheetEditorProps> = (props) => {
 		})
 	}
 
+	const apiContext = useContext(APIContext);
+
 	const onClickSave = () => {
-		dispatch(saveSheet(new SheetsAPI(), sheet));
+		dispatch(saveSheet(apiContext.sheetsAPI, sheet));
 	}
 
 	return (

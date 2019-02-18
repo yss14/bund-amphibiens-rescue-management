@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { DispatchPropThunk } from '../../../types/DispatchPropThunk';
 import { SheetsAction, saveSheet, selectSheet, ISheetSelect } from '../../../redux/sheets/sheets.actions';
 import { IStoreSchema } from '../../../redux/store.schema';
@@ -12,17 +12,18 @@ import AddIcon from '@material-ui/icons/Add';
 import moment from 'moment';
 import { SheetListItem } from './SheetListItem';
 import { withRouter, RouteComponentProps } from 'react-router';
-import { SheetsAPI } from '../../../api/sheets-api';
 import { makeEmptySheet } from '../../../utils/create-sheet';
 import { getBucketNumbers, getAmphibientsLabels } from '../../../utils/envs';
 import { Dispatch } from 'redux';
 import urljoin from 'url-join';
+import { APIContext } from '../../../Root';
 
 interface ISheetListProps extends DispatchPropThunk<IStoreSchema, SheetsAction>, RouteComponentProps {
 	sheets: ISheetWithID[];
 }
 
 const SheetListComp: React.FunctionComponent<ISheetListProps> = ({ dispatch, sheets, match, history }) => {
+	const apiContext = useContext(APIContext);
 
 	const sortSheets = (lhs: ISheetWithID, rhs: ISheetWithID) => {
 		return moment(rhs.dateOfRecord).valueOf() - moment(lhs.dateOfRecord).valueOf();
@@ -31,7 +32,7 @@ const SheetListComp: React.FunctionComponent<ISheetListProps> = ({ dispatch, she
 	const onClickAddSheet = () => {
 		dispatch(
 			saveSheet(
-				new SheetsAPI(),
+				apiContext.sheetsAPI,
 				makeEmptySheet(
 					getBucketNumbers(),
 					getAmphibientsLabels(),

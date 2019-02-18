@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { withRouter, Route, RouteComponentProps } from "react-router";
 import { SheetEditor } from '../sheet-editor/SheetEditor';
 import { SheetList } from '../sheet-list/SheetList';
@@ -6,10 +6,10 @@ import { connect } from 'react-redux';
 import { DispatchPropThunk } from '../../../types/DispatchPropThunk';
 import { IStoreSchema } from '../../../redux/store.schema';
 import { SheetsAction, fetchShares } from '../../../redux/sheets/sheets.actions';
-import { SheetsAPI } from '../../../api/sheets-api';
 import { LoadingSpinner } from '../../other/LoadingSpinner';
 import { ISheetWithID } from '../../../../../shared-types/ISheet';
 import { NotFound } from '../other/NotFound';
+import { APIContext } from '../../../Root';
 
 export const SheetRouter = withRouter((props) => {
 	return <ConnectedSheetRouter {...props} />
@@ -26,8 +26,10 @@ interface ConnectedSheetRouterProps extends RouteComponentProps, DispatchPropThu
 const ConnectedSheetRouter = connect(mapStateToProps)(({ dispatch, match, selectedSheet }: ConnectedSheetRouterProps) => {
 	const [fetchedSheets, setFetchedSheets] = useState(false);
 
+	const apiContext = useContext(APIContext);
+
 	useEffect(() => {
-		dispatch(fetchShares(new SheetsAPI()))
+		dispatch(fetchShares(apiContext.sheetsAPI))
 			.then(() => setFetchedSheets(true));
 	}, []);
 
