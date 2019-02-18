@@ -1,9 +1,9 @@
 import React from 'react';
-import { DispatchPropThunk } from '../../types/DispatchPropThunk';
-import { SheetsAction } from '../../redux/sheets/sheets.actions';
-import { IStoreSchema } from '../../redux/store.schema';
+import { DispatchPropThunk } from '../../../types/DispatchPropThunk';
+import { SheetsAction, saveSheet, selectSheet, ISheetSelect } from '../../../redux/sheets/sheets.actions';
+import { IStoreSchema } from '../../../redux/store.schema';
 import { connect } from 'react-redux';
-import { ISheetWithID } from '../../../../shared-types/ISheet';
+import { ISheetWithID } from '../../../../../shared-types/ISheet';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -12,6 +12,11 @@ import AddIcon from '@material-ui/icons/Add';
 import moment from 'moment';
 import { SheetListItem } from './SheetListItem';
 import { withRouter, RouteComponentProps } from 'react-router';
+import { SheetsAPI } from '../../../api/sheets-api';
+import { makeEmptySheet } from '../../../utils/create-sheet';
+import { getBucketNumbers, getAmphibientsLabels } from '../../../utils/envs';
+import { Dispatch } from 'redux';
+import urljoin from 'url-join';
 
 interface ISheetListProps extends DispatchPropThunk<IStoreSchema, SheetsAction>, RouteComponentProps {
 	sheets: ISheetWithID[];
@@ -23,12 +28,29 @@ const SheetListComp: React.FunctionComponent<ISheetListProps> = ({ dispatch, she
 		return moment(rhs.dateOfRecord).valueOf() - moment(lhs.dateOfRecord).valueOf();
 	};
 
-	const onClickFloatingButton = () => {
-		history.push(`${match.path}/new`);
+	const onClickAddSheet = () => {
+		dispatch(
+			saveSheet(
+				new SheetsAPI(),
+				makeEmptySheet(
+					getBucketNumbers(),
+					getAmphibientsLabels(),
+					'Yannick (hardcoded)'
+				)
+			)
+		).then(newSheet => {
+			(dispatch as Dispatch<ISheetSelect>)(selectSheet(newSheet));
+			history.push(urljoin(match.path, newSheet.id));
+		});
 	};
 
 	const onClickListItem = (sheetID: string) => {
-		history.push(`${match.path}/${sheetID}`);
+		const sheet = sheets.find(sheet => sheet.id === sheetID);
+
+		if (sheet) {
+			(dispatch as Dispatch<ISheetSelect>)(selectSheet(sheet));
+			history.push(`${match.path}/${sheetID}`);
+		}
 	};
 
 	const floatingButtonStyle: React.CSSProperties = {
@@ -58,7 +80,7 @@ const SheetListComp: React.FunctionComponent<ISheetListProps> = ({ dispatch, she
 					/>
 				)}
 			</List>
-			<Fab style={floatingButtonStyle} onClick={onClickFloatingButton}>
+			<Fab style={floatingButtonStyle} onClick={onClickAddSheet}>
 				<AddIcon />
 			</Fab>
 		</React.Fragment>

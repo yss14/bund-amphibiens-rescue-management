@@ -1,8 +1,10 @@
-import { ISheetWithID } from "../../../shared-types/ISheet";
+import { ISheetWithID, ISheet } from "../../../shared-types/ISheet";
 import axios, { AxiosInstance } from 'axios';
 
 export interface ISheetsAPI {
 	getSheets(): Promise<ISheetWithID[]>;
+	createSheet(sheet: ISheet): Promise<ISheetWithID>;
+	updateSheet(sheet: ISheetWithID): Promise<void>;
 }
 
 export class SheetsAPI implements ISheetsAPI {
@@ -19,8 +21,18 @@ export class SheetsAPI implements ISheetsAPI {
 	}
 
 	public async getSheets() {
-		const sheets = await this.axiosInstance.get<ISheetWithID[]>('/sheets');
+		const apiResult = await this.axiosInstance.get<ISheetWithID[]>('/sheets');
 
-		return sheets.data;
+		return apiResult.data;
+	}
+
+	public async updateSheet(sheet: ISheetWithID) {
+		await this.axiosInstance.put(`/sheets/${sheet.id}`, sheet);
+	}
+
+	public async createSheet(sheet: ISheet): Promise<ISheetWithID> {
+		const apiResult = await this.axiosInstance.post<ISheetWithID>(`/sheets`, sheet);
+
+		return apiResult.data;
 	}
 }

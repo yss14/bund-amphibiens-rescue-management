@@ -4,3 +4,13 @@ export const SHEETS_FETCHED = 'SHEETS_FETCHED';
 export type SHEETS_FETCHED = typeof SHEETS_FETCHED;
 export const SHEETS_FETCH_FAILED = 'SHEETS_FETCH_FAILED';
 export type SHEETS_FETCH_FAILED = typeof SHEETS_FETCH_FAILED;
+
+export const SHEET_SAVING = 'SHEET_SAVING';
+export type SHEET_SAVING = typeof SHEET_SAVING;
+export const SHEET_SAVED = 'SHEET_SAVED';
+export type SHEET_SAVED = typeof SHEET_SAVED;
+export const SHEET_SAVE_FAILED = 'SHEET_SAVE_FAILED';
+export type SHEET_SAVE_FAILED = typeof SHEET_SAVE_FAILED;
+
+export const SHEET_SELECT = 'SHEET_SELECT';
+export type SHEET_SELECT = typeof SHEET_SELECT;

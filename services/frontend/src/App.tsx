@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { NotFound } from './views/other/NotFound';
+import { NotFound } from './components/views/other/NotFound';
 
 class App extends Component {
 	render() {

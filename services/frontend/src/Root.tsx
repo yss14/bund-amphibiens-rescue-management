@@ -1,21 +1,16 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { createBrowserHistory } from "history";
 import { createReduxStore } from "./redux/create-store";
-import { Provider, connect } from "react-redux";
+import { Provider } from "react-redux";
 import { Router, Route, Switch } from "react-router";
-import { NotFound } from "./views/other/NotFound";
+import { NotFound } from "./components/views/other/NotFound";
 import { createGlobalStyle } from 'styled-components';
-import { SheetRouter } from './views/routers/SheetRouter';
-import { fetchShares, SheetsAction } from './redux/sheets/sheets.actions';
-import { SheetsAPI } from './api/sheets-api';
-import { DispatchPropThunk } from './types/DispatchPropThunk';
-import { IStoreSchema } from './redux/store.schema';
+import { SheetRouter } from './components/views/routers/SheetRouter';
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import MomentUtils from '@date-io/moment';
 
 const history = createBrowserHistory();
 const store = createReduxStore();
-const sheetsAPI = new SheetsAPI();
 
 const GlobalStyle = createGlobalStyle`
 	html, body {
@@ -37,11 +32,7 @@ export const Root = () => {
 	);
 }
 
-const MainRouter = connect()(({ dispatch }: DispatchPropThunk<IStoreSchema, SheetsAction>) => {
-	useEffect(() => {
-		dispatch(fetchShares(sheetsAPI));
-	}, []);
-
+const MainRouter = () => {
 	return (
 		<Router history={history}>
 			<Switch>
@@ -50,4 +41,4 @@ const MainRouter = connect()(({ dispatch }: DispatchPropThunk<IStoreSchema, Shee
 			</Switch>
 		</Router>
 	);
-});
+};

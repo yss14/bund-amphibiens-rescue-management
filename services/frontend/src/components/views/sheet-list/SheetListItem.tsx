@@ -1,5 +1,5 @@
 import React from 'react';
-import { ISheetWithID } from '../../../../shared-types/ISheet';
+import { ISheetWithID } from '../../../../../shared-types/ISheet';
 import { ListSubheader, ListItem, ListItemText } from '@material-ui/core';
 import moment from 'moment';
 import styled from 'styled-components';

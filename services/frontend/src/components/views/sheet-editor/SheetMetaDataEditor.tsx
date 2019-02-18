@@ -1,9 +1,9 @@
 import React from 'react';
 import { TextField, FormControlLabel, Checkbox } from '@material-ui/core';
-import { ISheetWithID, ISheet } from '../../../../shared-types/ISheet';
+import { ISheetWithID, ISheet } from '../../../../../shared-types/ISheet';
 import { SheetPropertyChangeCallback } from './SheetEditor';
 import { InlineDateTimePicker } from 'material-ui-pickers';
-import { Cloudiness } from '../../types/Cloudiness';
+import { Cloudiness } from '../../../types/Cloudiness';
 
 interface SheetMetaDataEditorProps {
 	sheet: ISheetWithID | ISheet;
