@@ -12,5 +12,12 @@ export type SHEET_SAVED = typeof SHEET_SAVED;
 export const SHEET_SAVE_FAILED = 'SHEET_SAVE_FAILED';
 export type SHEET_SAVE_FAILED = typeof SHEET_SAVE_FAILED;
 
+export const SHEET_CREATING = 'SHEET_CREATING';
+export type SHEET_CREATING = typeof SHEET_CREATING;
+export const SHEET_CREATED = 'SHEET_CREATED';
+export type SHEET_CREATED = typeof SHEET_CREATED;
+export const SHEET_CREATE_FAILED = 'SHEET_CREATE_FAILED';
+export type SHEET_CREATE_FAILED = typeof SHEET_CREATE_FAILED;
+
 export const SHEET_SELECT = 'SHEET_SELECT';
 export type SHEET_SELECT = typeof SHEET_SELECT;

@@ -6,7 +6,8 @@ const defaultState: ISheetsSchema = {
 	data: [],
 	selectedSheet: null,
 	isFetching: false,
-	isSaving: false
+	isSaving: false,
+	isCreating: false
 }
 
 export const sheetsReducer = (state: ISheetsSchema = defaultState, action: SheetsAction): ISheetsSchema => {
@@ -24,14 +25,17 @@ export const sheetsReducer = (state: ISheetsSchema = defaultState, action: Sheet
 			return { ...state, isSaving: true };
 
 		case constants.SHEET_SAVED:
-			return {
-				...state, isSaving: false, data: state.data.find(sheet => sheet.id === action.payload.id)
-					? state.data
-					: state.data.concat(action.payload)
-			}
-
 		case constants.SHEET_SAVE_FAILED:
 			return { ...state, isSaving: false };
+
+		case constants.SHEET_CREATING:
+			return { ...state, isCreating: true };
+
+		case constants.SHEET_CREATED:
+			return { ...state, isCreating: false, data: state.data.concat(action.payload) };
+
+		case constants.SHEET_CREATE_FAILED:
+			return { ...state, isCreating: false };
 
 		case constants.SHEET_SELECT:
 			return { ...state, selectedSheet: action.payload };

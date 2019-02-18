@@ -5,4 +5,5 @@ export interface ISheetsSchema {
 	selectedSheet: ISheetWithID | null;
 	isFetching: boolean;
 	isSaving: boolean;
+	isCreating: boolean;
 }

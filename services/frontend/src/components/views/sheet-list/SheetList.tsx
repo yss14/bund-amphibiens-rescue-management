@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { DispatchPropThunk } from '../../../types/DispatchPropThunk';
-import { SheetsAction, saveSheet, selectSheet, ISheetSelect } from '../../../redux/sheets/sheets.actions';
+import { SheetsAction, selectSheet, ISheetSelect } from '../../../redux/sheets/sheets.actions';
 import { IStoreSchema } from '../../../redux/store.schema';
 import { connect } from 'react-redux';
 import { ISheetWithID } from '../../../../../shared-types/ISheet';
@@ -17,6 +17,7 @@ import { getBucketNumbers, getAmphibientsLabels } from '../../../utils/envs';
 import { Dispatch } from 'redux';
 import urljoin from 'url-join';
 import { APIContext } from '../../../Root';
+import { createSheet } from '../../../redux/sheets/actions/sheet-create.action';
 
 interface ISheetListProps extends DispatchPropThunk<IStoreSchema, SheetsAction>, RouteComponentProps {
 	sheets: ISheetWithID[];
@@ -31,7 +32,7 @@ const SheetListComp: React.FunctionComponent<ISheetListProps> = ({ dispatch, she
 
 	const onClickAddSheet = () => {
 		dispatch(
-			saveSheet(
+			createSheet(
 				apiContext.sheetsAPI,
 				makeEmptySheet(
 					getBucketNumbers(),

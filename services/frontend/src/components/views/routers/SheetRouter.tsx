@@ -5,11 +5,12 @@ import { SheetList } from '../sheet-list/SheetList';
 import { connect } from 'react-redux';
 import { DispatchPropThunk } from '../../../types/DispatchPropThunk';
 import { IStoreSchema } from '../../../redux/store.schema';
-import { SheetsAction, fetchShares } from '../../../redux/sheets/sheets.actions';
+import { SheetsAction } from '../../../redux/sheets/sheets.actions';
 import { LoadingSpinner } from '../../other/LoadingSpinner';
 import { ISheetWithID } from '../../../../../shared-types/ISheet';
 import { NotFound } from '../other/NotFound';
 import { APIContext } from '../../../Root';
+import { fetchShares } from '../../../redux/sheets/actions/sheets-fetch.action';
 
 export const SheetRouter = withRouter((props) => {
 	return <ConnectedSheetRouter {...props} />

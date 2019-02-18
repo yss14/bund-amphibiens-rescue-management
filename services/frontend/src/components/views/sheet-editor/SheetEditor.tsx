@@ -8,9 +8,9 @@ import { SheetMetaDataEditor } from './SheetMetaDataEditor';
 import { SheetEditorPane } from './SheetEditorPane';
 import { SheetTableItemsEditor } from './SheetTableItemsEditor';
 import { DispatchPropThunk } from '../../../types/DispatchPropThunk';
-import { SheetSaveAction, saveSheet } from '../../../redux/sheets/sheets.actions';
 import { Snackbar } from '@material-ui/core';
 import { APIContext } from '../../../Root';
+import { SheetSaveAction, saveSheet } from '../../../redux/sheets/actions/sheet-save.action';
 
 export type SheetPropertyChangeCallback = <T extends ISheet, K extends keyof ISheet>(propertyName: K, newValue: T[K]) => void;
 export type SheetTableItemChangeCallback = (bucketNumber: number, amphibiensKind: string, newAmount: number) => void;
