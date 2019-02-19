@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { DispatchPropThunk } from '../../../types/DispatchPropThunk';
 import { SheetsAction, selectSheet, ISheetSelect } from '../../../redux/sheets/sheets.actions';
 import { IStoreSchema } from '../../../redux/store.schema';
@@ -18,6 +18,7 @@ import { Dispatch } from 'redux';
 import urljoin from 'url-join';
 import { APIContext } from '../../../Root';
 import { createSheet } from '../../../redux/sheets/actions/sheet-create.action';
+import { LoadingSpinner } from '../../other/LoadingSpinner';
 
 interface ISheetListProps extends DispatchPropThunk<IStoreSchema, SheetsAction>, RouteComponentProps {
 	sheets: ISheetWithID[];
@@ -25,12 +26,14 @@ interface ISheetListProps extends DispatchPropThunk<IStoreSchema, SheetsAction>,
 
 const SheetListComp: React.FunctionComponent<ISheetListProps> = ({ dispatch, sheets, match, history }) => {
 	const apiContext = useContext(APIContext);
+	const [isCreatingSheet, setIsCreatingSheet] = useState(false);
 
 	const sortSheets = (lhs: ISheetWithID, rhs: ISheetWithID) => {
 		return moment(rhs.dateOfRecord).valueOf() - moment(lhs.dateOfRecord).valueOf();
 	};
 
 	const onClickAddSheet = () => {
+		setIsCreatingSheet(true);
 		dispatch(
 			createSheet(
 				apiContext.sheetsAPI,
@@ -72,19 +75,22 @@ const SheetListComp: React.FunctionComponent<ISheetListProps> = ({ dispatch, she
           			</Typography>
 				</Toolbar>
 			</AppBar>
-			<List style={{ marginTop: 64, paddingTop: 0, overflowY: 'auto' }}>
-				{sheets.sort(sortSheets).map((sheet, i) =>
-					<SheetListItem
-						key={sheet.id}
-						sheet={sheet}
-						onClick={() => onClickListItem(sheet.id)}
-						isSameDayAsPrevItem={i > 0 && moment(sheet.dateOfRecord).isSame(sheets[i - 1].dateOfRecord, 'day')}
-					/>
-				)}
-			</List>
-			<Fab style={floatingButtonStyle} onClick={onClickAddSheet}>
-				<AddIcon />
-			</Fab>
+			{!isCreatingSheet && <React.Fragment>
+				<List style={{ marginTop: 64, paddingTop: 0, overflowY: 'auto' }}>
+					{sheets.sort(sortSheets).map((sheet, i) =>
+						<SheetListItem
+							key={sheet.id}
+							sheet={sheet}
+							onClick={() => onClickListItem(sheet.id)}
+							isSameDayAsPrevItem={i > 0 && moment(sheet.dateOfRecord).isSame(sheets[i - 1].dateOfRecord, 'day')}
+						/>
+					)}
+				</List>
+				<Fab style={floatingButtonStyle} onClick={onClickAddSheet}>
+					<AddIcon />
+				</Fab>
+			</React.Fragment>}
+			{isCreatingSheet && <LoadingSpinner />}
 		</React.Fragment>
 	);
 }
