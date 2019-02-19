@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { withRouter, RouteComponentProps, Redirect } from 'react-router';
 import { ISheetWithID, ISheet } from '../../../../../shared-types/ISheet';
 import { IStoreSchema } from '../../../redux/store.schema';
@@ -11,13 +11,13 @@ import { DispatchPropThunk } from '../../../types/DispatchPropThunk';
 import { Snackbar } from '@material-ui/core';
 import { APIContext } from '../../../Root';
 import { SheetSaveAction, saveSheet } from '../../../redux/sheets/actions/sheet-save.action';
+import { usePrevious } from '../../../utils/use-previous';
 
 export type SheetPropertyChangeCallback = <T extends ISheet, K extends keyof ISheet>(propertyName: K, newValue: T[K]) => void;
 export type SheetTableItemChangeCallback = (bucketNumber: number, amphibiensKind: string, newAmount: number) => void;
 
 interface ISheetEditorProps extends RouteComponentProps<{ sheetID: string }>, DispatchPropThunk<IStoreSchema, SheetSaveAction> {
 	sheet: ISheetWithID;
-	isSaving: boolean;
 }
 
 interface ISheetEditorState {
@@ -26,27 +26,14 @@ interface ISheetEditorState {
 }
 
 const SheetEditorComp: React.FunctionComponent<ISheetEditorProps> = (props) => {
-	const { sheet: sheetFromProps, match, dispatch, isSaving, history, ...remainingProps } = props;
+	const { sheet: sheetFromProps, match, dispatch, history, ...remainingProps } = props;
 
 	const [state, setState] = useState<ISheetEditorState>({
 		sheet: sheetFromProps,
 		showSuccessfulMessage: false
 	});
 
-	useEffect(() => {
-		if (!state.showSuccessfulMessage && isSaving) {
-			setState({
-				...state,
-				showSuccessfulMessage: true
-			});
-
-			const timeoutRef = setTimeout(() => setState({ ...state, showSuccessfulMessage: false }), 5000);
-
-			return () => clearTimeout(timeoutRef);
-		}
-	}, [isSaving]);
-
-	const { sheet } = state;
+	const { sheet, showSuccessfulMessage } = state;
 
 	const onChangeSheetProperty: SheetPropertyChangeCallback = (propertyName, newValue) => {
 		setState({
@@ -75,8 +62,26 @@ const SheetEditorComp: React.FunctionComponent<ISheetEditorProps> = (props) => {
 	const apiContext = useContext(APIContext);
 
 	const onClickSave = () => {
-		dispatch(saveSheet(apiContext.sheetsAPI, sheet));
+		dispatch(saveSheet(apiContext.sheetsAPI, sheet))
+			.then(() => {
+				setState({ ...state, showSuccessfulMessage: true });
+			});
 	}
+
+	const prevShowSuccessfulMessage = usePrevious(showSuccessfulMessage);
+
+	useEffect(() => {
+		if (!prevShowSuccessfulMessage && showSuccessfulMessage) {
+			const timetoutRef = setTimeout(() => {
+				setState({
+					...state,
+					showSuccessfulMessage: false
+				});
+			}, 4000);
+
+			return () => clearTimeout(timetoutRef);
+		}
+	}, [showSuccessfulMessage]);
 
 	return (
 		<React.Fragment>
@@ -102,14 +107,12 @@ const SheetEditorComp: React.FunctionComponent<ISheetEditorProps> = (props) => {
 }
 
 const mapStateToProps = (state: IStoreSchema) => ({
-	isSaving: state.sheets.isSaving,
 	sheets: state.sheets.data
 });
 
 interface SheetEditorConnectedProps extends RouteComponentProps<{ sheetID: string }>, DispatchPropThunk<IStoreSchema, SheetSaveAction> {
 	sheet: ISheetWithID | null;
 	sheets: ISheetWithID[];
-	isSaving: boolean;
 }
 
 const SheetEditorConnected = connect(mapStateToProps)(({ match, sheet, sheets, ...props }: SheetEditorConnectedProps) => {

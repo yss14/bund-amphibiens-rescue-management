@@ -5,31 +5,16 @@ import { ThunkDispatch } from 'redux-thunk';
 import { IStoreSchema } from '../../store.schema';
 import { SheetsAction } from '../sheets.actions';
 
-export interface ISharesFetching {
-	type: typeof constants.SHEETS_FETCHING;
-	payload: boolean;
-}
-
 export interface ISharesFetched {
 	type: constants.SHEETS_FETCHED;
 	payload: ISheetWithID[];
 }
 
-export interface ISharesFetchFailed {
-	type: constants.SHEETS_FETCH_FAILED;
-	payload: Error;
-}
-
-export type SheetsFetchActions = ISharesFetching | ISharesFetched | ISharesFetchFailed;
+export type SheetsFetchActions = ISharesFetched;
 
 export const fetchShares = (api: ISheetsAPI) =>
 	async (dispatch: ThunkDispatch<IStoreSchema, void, SheetsAction>) => {
 		try {
-			dispatch({
-				type: constants.SHEETS_FETCHING,
-				payload: true
-			});
-
 			const sheets = await api.getSheets();
 
 			dispatch({
@@ -40,11 +25,6 @@ export const fetchShares = (api: ISheetsAPI) =>
 			return Promise.resolve();
 		} catch (err) {
 			console.log(err);
-
-			dispatch({
-				type: constants.SHEETS_FETCH_FAILED,
-				payload: err
-			});
 
 			return Promise.reject();
 		}
