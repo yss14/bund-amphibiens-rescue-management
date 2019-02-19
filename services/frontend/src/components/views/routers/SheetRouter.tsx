@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { withRouter, Route, RouteComponentProps } from "react-router";
+import { withRouter, Route, RouteComponentProps, Switch } from "react-router";
 import { SheetEditor } from '../sheet-editor/SheetEditor';
 import { SheetList } from '../sheet-list/SheetList';
 import { connect } from 'react-redux';
@@ -37,14 +37,14 @@ const ConnectedSheetRouter = connect(mapStateToProps)(({ dispatch, match, select
 	if (!fetchedSheets) {
 		return <LoadingSpinner />;
 	}
-
+	console.log(match.path)
 	return (
-		<React.Fragment>
-			<Route path="/sheets/:sheetID([a-zA-Z0-9]{24})" render={
+		<Switch>
+			<Route exact path={`${match.path}/:sheetID([a-zA-Z0-9]{24})`} render={
 				() => <SheetEditor sheet={selectedSheet} />
 			} />
-			<Route exact path={match.url} component={SheetList} />
+			<Route exact path={`${match.path}`} component={SheetList} />
 			<Route component={NotFound} />
-		</React.Fragment>
+		</Switch>
 	);
 });
