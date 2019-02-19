@@ -9,6 +9,8 @@ import { SheetRouter } from './components/views/routers/SheetRouter';
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import MomentUtils from '@date-io/moment';
 import { SheetsAPI } from './api/sheets-api';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
+import { ThemeProvider } from '@material-ui/styles';
 
 const history = createBrowserHistory();
 const store = createReduxStore();
@@ -19,6 +21,19 @@ const GlobalStyle = createGlobalStyle`
 		padding: 0px;
 	}
 `;
+
+const theme = createMuiTheme({
+	palette: {
+		primary: {
+			main: '#77b438',
+			contrastText: 'white',
+			light: '#f3f3f3'
+		},
+	},
+	typography: {
+		useNextVariants: true,
+	},
+});
 
 const sheetsAPI = new SheetsAPI();
 
@@ -35,11 +50,15 @@ export const Root = () => {
 		<React.Fragment>
 			<GlobalStyle />
 			<Provider store={store}>
-				<APIContext.Provider value={{ sheetsAPI: sheetsAPI }}>
-					<MuiPickersUtilsProvider utils={MomentUtils}>
-						<MainRouter />
-					</MuiPickersUtilsProvider>
-				</APIContext.Provider>
+				<MuiThemeProvider theme={theme}>
+					<ThemeProvider theme={theme}>
+						<APIContext.Provider value={{ sheetsAPI: sheetsAPI }}>
+							<MuiPickersUtilsProvider utils={MomentUtils}>
+								<MainRouter />
+							</MuiPickersUtilsProvider>
+						</APIContext.Provider>
+					</ThemeProvider>
+				</MuiThemeProvider>
 			</Provider>
 		</React.Fragment>
 	);

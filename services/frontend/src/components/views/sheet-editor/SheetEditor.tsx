@@ -8,10 +8,11 @@ import { SheetMetaDataEditor } from './SheetMetaDataEditor';
 import { SheetEditorPane } from './SheetEditorPane';
 import { SheetTableItemsEditor } from './SheetTableItemsEditor';
 import { DispatchPropThunk } from '../../../types/DispatchPropThunk';
-import { Snackbar } from '@material-ui/core';
+import { Snackbar, Theme } from '@material-ui/core';
 import { APIContext } from '../../../Root';
 import { SheetSaveAction, saveSheet } from '../../../redux/sheets/actions/sheet-save.action';
 import { usePrevious } from '../../../utils/use-previous';
+import { useTheme } from '@material-ui/styles';
 
 export type SheetPropertyChangeCallback = <T extends ISheet, K extends keyof ISheet>(propertyName: K, newValue: T[K]) => void;
 export type SheetTableItemChangeCallback = (bucketNumber: number, amphibiensKind: string, newAmount: number) => void;
@@ -83,6 +84,8 @@ const SheetEditorComp: React.FunctionComponent<ISheetEditorProps> = (props) => {
 		}
 	}, [showSuccessfulMessage]);
 
+	const theme = useTheme<Theme>();
+
 	return (
 		<React.Fragment>
 			<SheetEditorAppBar sheet={sheet} match={match} history={history} {...remainingProps} onClickSave={onClickSave} />
@@ -96,15 +99,16 @@ const SheetEditorComp: React.FunctionComponent<ISheetEditorProps> = (props) => {
 				message={<span>Erfolgreich gespeichert</span>}
 				ContentProps={{
 					style: {
-						backgroundColor: '#43a047',
-						justifyContent: 'center'
+						backgroundColor: theme.palette.primary.light,
+						justifyContent: 'center',
+						color: 'black'
 					}
 				}}
 				style={{ marginTop: document.documentElement.clientWidth <= 960 ? 0 : 8 }}
 			/>
 		</React.Fragment >
 	);
-}
+};
 
 const mapStateToProps = (state: IStoreSchema) => ({
 	sheets: state.sheets.data
