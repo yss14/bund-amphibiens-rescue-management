@@ -5,13 +5,13 @@ import * as jwt from 'jsonwebtoken';
 
 const privateKey = uuid();
 const mockedDefaultPasswordOracle: IPasswordOracle = {
-	passwordIdValid: async (password) => true
+	passwordIsValid: async (password) => true
 }
 
 describe('password validity', () => {
 	test('valid password', async () => {
 		const mockedPasswordOracle: IPasswordOracle = {
-			passwordIdValid: async (password) => true
+			passwordIsValid: async (password) => true
 		}
 		const loginService = new LoginService(privateKey, mockedPasswordOracle);
 
@@ -22,7 +22,7 @@ describe('password validity', () => {
 
 	test('invalid password', async () => {
 		const mockedPasswordOracle: IPasswordOracle = {
-			passwordIdValid: async (password) => false
+			passwordIsValid: async (password) => false
 		}
 		const loginService = new LoginService(privateKey, mockedPasswordOracle);
 

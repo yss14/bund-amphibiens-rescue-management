@@ -1,3 +1,3 @@
 export interface IPasswordOracle {
-	passwordIdValid(password: string): Promise<boolean>;
+	passwordIsValid(password: string): Promise<boolean>;
 }

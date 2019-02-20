@@ -11,7 +11,7 @@ export class LoginService implements ILoginService {
 	) { }
 
 	public passwordIsValid(password: string) {
-		return this.passwordOracle.passwordIdValid(password);
+		return this.passwordOracle.passwordIsValid(password);
 	}
 
 	public createAccessToken<T>(payload: T) {
