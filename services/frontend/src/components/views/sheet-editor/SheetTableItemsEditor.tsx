@@ -2,7 +2,7 @@ import React from 'react';
 import { Table, TableHead, TableRow, TableCell, TableBody, TextField } from '@material-ui/core';
 import styled from 'styled-components';
 import { getAmphibientsLabels } from '../../../utils/envs';
-import { groupBy } from 'lodash';
+import groupBy from 'lodash.groupby';
 import { ISheetWithID, ISheet } from '../../../../../shared-types/ISheet';
 import { SheetTableItemChangeCallback } from './SheetEditor';
 

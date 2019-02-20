@@ -11,9 +11,15 @@ import MomentUtils from '@date-io/moment';
 import { SheetsAPI } from './api/sheets-api';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
+import { Login } from './components/views/login/Login';
+import { saveUserStoreToLocalStorage } from './redux/store-persist-adapter';
 
 const history = createBrowserHistory();
 const store = createReduxStore();
+
+store.subscribe(() => {
+	saveUserStoreToLocalStorage(store.getState().user);
+});
 
 const GlobalStyle = createGlobalStyle`
 	html, body {
@@ -69,6 +75,7 @@ const MainRouter = () => {
 		<Router history={history}>
 			<Switch>
 				<Route path="/sheets" component={SheetRouter} />
+				<Route path="/" component={Login} />
 				<Route component={NotFound} />
 			</Switch>
 		</Router>
