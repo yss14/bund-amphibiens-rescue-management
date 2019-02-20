@@ -17,7 +17,10 @@
 	"collectCoverageFrom": [
 		"**/*.ts",
 		"!**/node_modules/**",
-		"!**/vendor/**"
+		"!**/vendor/**",
+		"!**/__test__/**",
+		"!src/index.ts",
+		"!src/database/seed-database.ts"
 	],
 	"coverageReporters": [
 		"text",
