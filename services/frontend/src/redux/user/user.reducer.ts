@@ -12,6 +12,9 @@ export const userReducer = (state: IUserSchema = defaultUserState, action: UserA
 		case constants.USER_LOGIN:
 			return { ...state, name: action.payload.name, authToken: action.payload.authToken };
 
+		case constants.USER_LOGOUT:
+			return { ...state, ...defaultUserState };
+
 		default: return state;
 	}
 }

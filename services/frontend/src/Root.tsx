@@ -8,11 +8,15 @@ import { createGlobalStyle } from 'styled-components';
 import { SheetRouter } from './components/views/routers/SheetRouter';
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import MomentUtils from '@date-io/moment';
-import { SheetsAPI } from './api/sheets-api';
+import { SheetsAPI, ISheetsAPI } from './api/sheets-api';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
 import { Login } from './components/views/login/Login';
 import { saveUserStoreToLocalStorage } from './redux/store-persist-adapter';
+import axios from 'axios';
+import { isAxiosError } from './typeguards/is-axios-error';
+import { logout } from './redux/user/user.actions';
+import { LoginAPI, ILoginAPI } from './api/login-api';
 
 const history = createBrowserHistory();
 const store = createReduxStore();
@@ -22,9 +26,24 @@ store.subscribe(() => {
 });
 
 const GlobalStyle = createGlobalStyle`
-	html, body {
+	html, body, #root {
 		margin: 0px;
 		padding: 0px;
+		width: 100%;
+		height: 100%;
+	}
+
+	@media only screen and (min-width : 1200px) {
+		#root{
+			width: 1200px;
+			position: relative;
+			margin: 0 auto;
+		}
+
+		header{
+			width: 1200px !important;
+			right: auto !important;
+		}
 	}
 `;
 
@@ -41,14 +60,35 @@ const theme = createMuiTheme({
 	},
 });
 
-const sheetsAPI = new SheetsAPI();
+const sharedAxiosInstance = axios.create({
+	baseURL: process.env.REACT_APP_BACKEND_URL || 'localhost:3000'
+});
+
+sharedAxiosInstance.interceptors.request.use((config) => {
+	config.headers['Authorization'] = store.getState().user.authToken
+	return config;
+}, (err) => Promise.reject(err));
+
+sharedAxiosInstance.interceptors.response.use((response) => response, (err) => {
+	if (isAxiosError(err) && err.response.status === 401) {
+		store.dispatch(logout());
+		history.push('/');
+	}
+
+	return Promise.reject(err);
+});
+
+const sheetsAPI = new SheetsAPI(sharedAxiosInstance);
+const loginAPI = new LoginAPI(sharedAxiosInstance);
 
 interface IAPIContext {
-	sheetsAPI: SheetsAPI;
+	sheetsAPI: ISheetsAPI;
+	loginAPI: ILoginAPI;
 }
 
 export const APIContext = React.createContext<IAPIContext>({
-	sheetsAPI: sheetsAPI
+	sheetsAPI,
+	loginAPI
 });
 
 export const Root = () => {
@@ -58,7 +98,7 @@ export const Root = () => {
 			<Provider store={store}>
 				<MuiThemeProvider theme={theme}>
 					<ThemeProvider theme={theme}>
-						<APIContext.Provider value={{ sheetsAPI: sheetsAPI }}>
+						<APIContext.Provider value={{ sheetsAPI, loginAPI }}>
 							<MuiPickersUtilsProvider utils={MomentUtils}>
 								<MainRouter />
 							</MuiPickersUtilsProvider>

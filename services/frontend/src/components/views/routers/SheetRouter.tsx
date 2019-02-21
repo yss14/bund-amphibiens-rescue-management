@@ -31,13 +31,14 @@ const ConnectedSheetRouter = connect(mapStateToProps)(({ dispatch, match, select
 
 	useEffect(() => {
 		dispatch(fetchShares(apiContext.sheetsAPI))
-			.then(() => setFetchedSheets(true));
+			.then(() => setFetchedSheets(true))
+			.catch(err => undefined);
 	}, []);
 
 	if (!fetchedSheets) {
 		return <LoadingSpinner />;
 	}
-	console.log(match.path)
+
 	return (
 		<Switch>
 			<Route exact path={`${match.path}/:sheetID([a-zA-Z0-9]{24})`} render={

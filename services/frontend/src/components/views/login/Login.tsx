@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Avatar, Typography, FormControl, InputLabel, Input, Button } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import styled from 'styled-components';
@@ -7,10 +7,18 @@ import { DispatchPropThunk } from '../../../types/DispatchPropThunk';
 import { IStoreSchema } from '../../../redux/store.schema';
 import { UserAction, login } from '../../../redux/user/user.actions';
 import { Redirect } from 'react-router';
+import { APIContext } from '../../../Root';
+import { isAxiosError } from '../../../typeguards/is-axios-error';
 
 const LoginWrapper = styled.div`
+	width: 100%;
+	height: 100%;
+	background-color: #77b438;
+`;
+
+const LoginModal = styled.div`
 	&{
-		width: 400px;
+		width: 320px;
 		position: absolute;
 		top: 50%;
 		left: 50%;
@@ -35,6 +43,13 @@ const LoginWrapper = styled.div`
 	}
 `;
 
+const ErrorHint = styled.div`
+	color: #f44336;
+	font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+	font-size: 12px;
+    padding-top: 6px;
+`;
+
 const isValidName = (name: string | null) => name !== null && name.trim().length > 0;
 const isValidPassword = (password: string | null) => password !== null && password.trim().length > 0;
 
@@ -49,11 +64,22 @@ interface ILoginProps extends DispatchPropThunk<IStoreSchema, UserAction> {
 export const Login = connect(mapStateToProps)(({ dispatch, accessToken }: ILoginProps) => {
 	const [name, setName] = useState<string | null>(null);
 	const [password, setPassword] = useState<string | null>(null);
-	//const [loginError, setLoginError] = useState<string | null>(null);
+	const [loginError, setLoginError] = useState<string | null>(null);
 
-	const onClickLogin = () => {
+	const { loginAPI } = useContext(APIContext);
+
+	const onClickLogin = (e: React.FormEvent<HTMLFormElement>) => {
 		if (name && password) {
-			dispatch(login(null, name, password));
+			e.preventDefault();
+
+			dispatch(login(loginAPI, name, password))
+				.catch((err) => {
+					if (isAxiosError(err) && err.response.status === 401) {
+						setLoginError('Name-Passwort Kombination falsch');
+					} else {
+						setLoginError('Unbekannter Fehler ist aufgetreten');
+					}
+				})
 		}
 	}
 
@@ -63,36 +89,39 @@ export const Login = connect(mapStateToProps)(({ dispatch, accessToken }: ILogin
 
 	return (
 		<LoginWrapper>
-			<Avatar>
-				<LockOutlinedIcon />
-			</Avatar>
-			<Typography component="h1" variant="h5" style={{ marginTop: 8 }}>Anmelden</Typography>
-			<form onSubmit={onClickLogin}>
-				<FormControl margin="normal" required fullWidth error={name !== null && !isValidName(name)}>
-					<InputLabel htmlFor="name">Name</InputLabel>
-					<Input id="name" name="name" autoFocus onChange={(e) => setName(e.target.value)} />
-				</FormControl>
-				<FormControl margin="normal" required fullWidth error={password !== null && !isValidPassword(password)}>
-					<InputLabel htmlFor="password">Password</InputLabel>
-					<Input
-						name="password"
-						type="password"
-						id="password"
-						autoComplete="current-password"
-						onChange={(e) => setPassword(e.target.value)}
-					/>
-				</FormControl>
-				<Button
-					type="submit"
-					fullWidth
-					variant="contained"
-					color="primary"
-					disabled={!isValidName(name) || !isValidPassword(password)}
-					style={{ marginTop: 20 }}
-				>
-					Anmelden
+			<LoginModal>
+				<Avatar>
+					<LockOutlinedIcon />
+				</Avatar>
+				<Typography component="h1" variant="h5" style={{ marginTop: 8 }}>Anmelden</Typography>
+				<form onSubmit={onClickLogin}>
+					<FormControl margin="normal" required fullWidth error={name !== null && !isValidName(name)}>
+						<InputLabel htmlFor="name">Name</InputLabel>
+						<Input id="name" name="name" autoFocus onChange={(e) => setName(e.target.value)} />
+					</FormControl>
+					<FormControl margin="normal" required fullWidth error={(password !== null && !isValidPassword(password)) || loginError !== null}>
+						<InputLabel htmlFor="password">Password</InputLabel>
+						<Input
+							name="password"
+							type="password"
+							id="password"
+							autoComplete="current-password"
+							onChange={(e) => setPassword(e.target.value)}
+						/>
+						{loginError && <ErrorHint>{loginError}</ErrorHint>}
+					</FormControl>
+					<Button
+						type="submit"
+						fullWidth
+						variant="contained"
+						color="primary"
+						disabled={!isValidName(name) || !isValidPassword(password)}
+						style={{ marginTop: 20 }}
+					>
+						Anmelden
           		</Button>
-			</form>
+				</form>
+			</LoginModal>
 		</LoginWrapper>
 	);
 });
