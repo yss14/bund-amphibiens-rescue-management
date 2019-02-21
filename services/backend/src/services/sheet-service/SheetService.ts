@@ -10,6 +10,7 @@ export class SheetNotFoundError extends Error {
 
 export class SheetModificationFailedError extends Error {
 	constructor(operation: 'insert' | 'update') {
+		/* istanbul ignore next */
 		super(`Sheet could not be ${operation}ed`);
 	}
 }
@@ -46,6 +47,7 @@ export class SheetService implements ISheetService {
 	public async createSheet(sheet: ISheet): Promise<ISheetWithID> {
 		const dbResult = await this.dbCollection.insertOne(sheet as any);
 
+		/* istanbul ignore else */
 		if (dbResult.insertedCount === 1 && dbResult.insertedId) {
 			return this.makeSheetObjectFromDBResult(sheet as ISheetDBResult); // mongo does some weird side effects
 		} else {
@@ -65,6 +67,7 @@ export class SheetService implements ISheetService {
 			}
 		);
 
+		/* istanbul ignore if */
 		if (dbResult.matchedCount !== 1) {
 			throw new SheetModificationFailedError('update');
 		}

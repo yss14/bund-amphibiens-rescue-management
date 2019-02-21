@@ -14,29 +14,35 @@ export const makeExpressServer = (...routers: Express.Router[]) => {
 	expressApp.use(BodyParser.urlencoded({ extended: true }));
 	expressApp.disable('x-powered-by');
 
+	/* istanbul ignore if */
 	if (!__TEST__) {
 		expressApp.use(Morgan('dev'));
 	}
 
-	expressApp.use(routers);
+	if (routers.length > 0) {
+		expressApp.use(routers);
+	}
 
 	expressApp.use((err: Error, req: Express.Request, res: Express.Response, next: Express.NextFunction) => {
-		console.error(err);
+		/* istanbul ignore if */
+		if (!__TEST__) {
+			console.error(err);
+		}
 
-		res.status(HTTPStatusCode.INTERNAL_SERVER_ERROR).send(err.message).end();
+		res.status(HTTPStatusCode.INTERNAL_SERVER_ERROR).json({ error: err.message });
 	});
 
 	return expressApp;
 }
 
 export const makeHTTPServerAndStartExpress = (expressApp: Express.Application, port: number) => {
-	return new Promise((resolve, reject) => {
+	return new Promise<http.Server>((resolve, reject) => {
 		const httpServer = http.createServer(expressApp);
 
 		httpServer.on('error', (err) => reject(err));
 
 		httpServer.listen(port, () => {
-			resolve();
+			resolve(httpServer);
 		});
 	});
 }

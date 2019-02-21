@@ -8,7 +8,7 @@ import { CustomEnv } from "./utils/env/CustomEnv";
 import { tryParseInt } from "./utils/try-parse";
 import { makeSheetsRouter } from "./rest/make-sheets-router";
 import { seedDatabase } from "./database/seed-database";
-import { makeSinglePasswordOracleFromEnvVars } from "./services/login-service/make-single-password-oracle";
+import { makeSinglePasswordOracleFromEnvVar } from "./services/login-service/make-single-password-oracle";
 import { LoginService } from "./services/login-service/LoginService";
 import { makeAuthMiddleware } from "./rest/middlewares/authentication-middleware";
 import { makeLoginRouter } from "./rest/make-login-router";
@@ -36,7 +36,7 @@ if (!__PROD__) {
 }
 
 (async () => {
-	const passwordOracle = await makeSinglePasswordOracleFromEnvVars(CustomEnv.LOGIN_PASSWORD);
+	const passwordOracle = await makeSinglePasswordOracleFromEnvVar(CustomEnv.LOGIN_PASSWORD);
 	const jwtSecret = getJWTSecret();
 	const loginService = new LoginService(jwtSecret, passwordOracle);
 	const authMiddleware = makeAuthMiddleware(loginService);

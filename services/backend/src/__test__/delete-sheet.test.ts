@@ -51,3 +51,18 @@ test('delete sheet by invalid shareID', async () => {
 
 	expect(httpResponse.status).toBe(HTTPStatusCode.BAD_REQUEST);
 });
+
+test('delete sheet with unexpected database error', async () => {
+	const { sheetService, cleanup } = await makeUniqueTestSheetService();
+	cleanUpHooks.push(cleanup);
+
+	sheetService.deleteSheet = () => { throw new Error('Unexpected database error') };
+
+	const expressApp = makeExpressServer(makeSheetsRouter(sheetService));
+
+	const httpResponse = await supertest(expressApp)
+		.delete(`/sheets/invalidid`)
+		.send();
+
+	expect(httpResponse.status).toBe(HTTPStatusCode.INTERNAL_SERVER_ERROR);
+});

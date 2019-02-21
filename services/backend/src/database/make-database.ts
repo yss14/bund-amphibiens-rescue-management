@@ -13,6 +13,7 @@ export const makeAndConnectDatabase = async (dbName?: string) => {
 		useNewUrlParser: true
 	};
 
+	/* istanbul ignore next */
 	if (mongoDBUser && mongoDBPassword) {
 		opts.auth = {
 			user: mongoDBUser,

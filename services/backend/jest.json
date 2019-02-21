@@ -20,7 +20,8 @@
 		"!**/vendor/**",
 		"!**/__test__/**",
 		"!src/index.ts",
-		"!src/database/seed-database.ts"
+		"!src/database/seed-database.ts",
+		"!src/utils/checker.ts"
 	],
 	"coverageReporters": [
 		"text",

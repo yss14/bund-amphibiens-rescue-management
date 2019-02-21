@@ -1,10 +1,11 @@
 import { CustomEnv } from "../../utils/env/CustomEnv";
 import { SinglePasswordOracle } from "./SinglePasswordOracle";
 
-export const makeSinglePasswordOracleFromEnvVars = async (envVar: CustomEnv) => {
+export const makeSinglePasswordOracleFromEnvVar = async (envVar: CustomEnv) => {
 	const passwordPlaintext = process.env[envVar];
 
-	if (!passwordPlaintext) {
+	/* istanbul ignore next */
+	if (typeof passwordPlaintext !== 'string' || passwordPlaintext.length === 0) {
 		throw new Error(`Env var ${envVar} is missing`);
 	}
 

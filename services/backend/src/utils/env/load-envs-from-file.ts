@@ -1,8 +1,10 @@
-import * as dotenv from 'dotenv';
+/* istanbul ignore next */
+import { load } from 'dotenv';
 import { NodeEnv } from './NodeEnv';
 
+/* istanbul ignore next */
 export const loadEnvsFromDotenvFile = (environment: NodeEnv) => {
-    dotenv.load({
-        path: `./${environment}.env`
-    });
+	load({
+		path: `./${environment}.env`
+	});
 }

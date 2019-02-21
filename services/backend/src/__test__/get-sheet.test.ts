@@ -52,3 +52,18 @@ test('get sheet by not-existing sheetID', async () => {
 
 	expect(httpResponse.status).toBe(HTTPStatusCode.NOT_FOUND);
 });
+
+test('get sheet with unexpected database error', async () => {
+	const { sheetService, cleanup } = await makeUniqueTestSheetService();
+	cleanUpHooks.push(cleanup);
+
+	sheetService.getSheet = () => { throw new Error('Unexpected database error') };
+
+	const expressApp = makeExpressServer(makeSheetsRouter(sheetService));
+
+	const httpResponse = await supertest(expressApp)
+		.get(`/sheets/5c6082cea068a184fc11aaaa`)
+		.send();
+
+	expect(httpResponse.status).toBe(HTTPStatusCode.INTERNAL_SERVER_ERROR);
+});

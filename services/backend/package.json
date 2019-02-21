@@ -7,7 +7,8 @@
 		"start": "npm run build && cross-env NODE_ENV=development node build/backend/src/index.js",
 		"build": "tsc --project tsconfig.json",
 		"test": "jest --config=jest.json",
-		"test:watch": "jest --watch --config=jest.json"
+		"test:watch": "jest --watch --config=jest.json",
+		"test:cov": "jest --collectCoverage --config=jest.json"
 	},
 	"author": "Yannick Stachelscheid",
 	"license": "MIT",
@@ -42,7 +43,7 @@
 		"cross-env": "^5.2.0",
 		"jest": "^24.1.0",
 		"supertest": "^3.4.2",
-		"ts-jest": "^23.10.5",
+		"ts-jest": "^24.0.0",
 		"tslint": "^5.12.1",
 		"tslint-clean-code": "^0.2.9",
 		"tslint-eslint-rules": "^5.4.0",
