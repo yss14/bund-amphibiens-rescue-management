@@ -21,7 +21,7 @@ const expectCheckerFail = (httpResponse: supertest.Response, property: string) =
 }
 
 const executeCreateSheetWithInvalidProperty = async (property: keyof ISheet, value: any) => {
-	const expressApp = makeExpressServer(makeSheetsRouter(null as any)); // don't need sheet service
+	const expressApp = makeExpressServer(makeSheetsRouter(null as any));
 
 	const sheet: ISheet = { ...sheetTemplate1, [property]: value as any };
 
@@ -33,7 +33,7 @@ const executeCreateSheetWithInvalidProperty = async (property: keyof ISheet, val
 }
 
 const executeCreateSheetWithInvalidTableItemProperty = async (property: keyof ISheetTableItem, index: number, value: any) => {
-	const expressApp = makeExpressServer(makeSheetsRouter(null as any)); // don't need sheet service
+	const expressApp = makeExpressServer(makeSheetsRouter(null as any));
 
 	const sheet: ISheet = {
 		...sheetTemplate1,

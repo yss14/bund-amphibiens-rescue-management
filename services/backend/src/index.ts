@@ -11,6 +11,7 @@ import { seedDatabase } from "./database/seed-database";
 import { makeSinglePasswordOracleFromEnvVars } from "./services/login-service/make-single-password-oracle";
 import { LoginService } from "./services/login-service/LoginService";
 import { makeAuthMiddleware } from "./rest/middlewares/authentication-middleware";
+import { makeLoginRouter } from "./rest/make-login-router";
 
 require('source-map-support').install();
 
@@ -48,8 +49,9 @@ if (!__PROD__) {
 		await seedDatabase(sheetService);
 	}
 
+	const loginRouter = makeLoginRouter(loginService);
 	const sheetsRouter = makeSheetsRouter(sheetService, authMiddleware);
-	const expressApp = makeExpressServer(sheetsRouter);
+	const expressApp = makeExpressServer(loginRouter, sheetsRouter);
 
 	const restPort = tryParseInt(process.env[CustomEnv.REST_PORT] || '3000', 3000);
 	await makeHTTPServerAndStartExpress(expressApp, restPort);
