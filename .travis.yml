@@ -6,26 +6,26 @@ services:
 matrix:
   include:
   - language: node_js
-  node_js:
-    - "node"
+    node_js:
+      - "10"
 
-  env:
-    - CXX=g++-6
-  addons:
-    apt:
-      sources:
-        - ubuntu-toolchain-r-test
-      packages:
-        - g++-6
+    env:
+      - CXX=g++-6
+    addons:
+      apt:
+        sources:
+          - ubuntu-toolchain-r-test
+        packages:
+          - g++-6
 
-  cache: npm
+    cache: npm
 
-  before_install:
-    - cd services/backend/
-    - npm install
+    before_install:
+      - cd services/backend/
+      - npm install
 
-  script:
-    - npm run build
-    - npm run lint
-    - npm run test:ci
+    script:
+      - npm run build
+      - npm run lint
+      - npm run test:ci
     
