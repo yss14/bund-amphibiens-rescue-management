@@ -22,7 +22,13 @@ matrix:
 
     before_install:
       - cd services/backend/
+      - npm install -g greenkeeper-lockfile
+      
+    install:  
       - npm install
+
+    before_script: greenkeeper-lockfile-update
+    after_script: greenkeeper-lockfile-upload
 
     script:
       - npm run build
@@ -37,7 +43,13 @@ matrix:
 
     before_install:
       - cd services/frontend
+      - npm install -g greenkeeper-lockfile
+      
+    install:  
       - npm install
+
+    before_script: greenkeeper-lockfile-update
+    after_script: greenkeeper-lockfile-upload
 
     script:
       - npm run build
