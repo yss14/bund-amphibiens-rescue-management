@@ -22,7 +22,7 @@ matrix:
 
     before_install:
       - cd services/backend/
-      - npm install -g greenkeeper-lockfile
+      - npm install -g greenkeeper-lockfile@2.x
       
     install:  
       - npm install
@@ -43,7 +43,7 @@ matrix:
 
     before_install:
       - cd services/frontend
-      - npm install -g greenkeeper-lockfile
+      - npm install -g greenkeeper-lockfile@2.x
       
     install:  
       - npm install
