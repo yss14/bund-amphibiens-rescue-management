@@ -15,6 +15,9 @@ export const sheetsReducer = (state: ISheetsSchema = defaultSheetsState, action:
 		case constants.SHEET_CREATED:
 			return { ...state, data: state.data.concat(action.payload) };
 
+		case constants.SHEET_SAVED:
+			return { ...state, data: state.data.map(item => item.id === action.payload.id ? action.payload : item) };
+
 		case constants.SHEET_SELECT:
 			return { ...state, selectedSheet: action.payload };
 

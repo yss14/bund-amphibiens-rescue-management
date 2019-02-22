@@ -22,9 +22,10 @@ import { LoadingSpinner } from '../../other/LoadingSpinner';
 
 interface ISheetListProps extends DispatchPropThunk<IStoreSchema, SheetsAction>, RouteComponentProps {
 	sheets: ISheetWithID[];
+	username: string;
 }
 
-const SheetListComp: React.FunctionComponent<ISheetListProps> = ({ dispatch, sheets, match, history }) => {
+const SheetListComp: React.FunctionComponent<ISheetListProps> = ({ dispatch, sheets, match, history, username }) => {
 	const apiContext = useContext(APIContext);
 	const [isCreatingSheet, setIsCreatingSheet] = useState(false);
 
@@ -40,7 +41,7 @@ const SheetListComp: React.FunctionComponent<ISheetListProps> = ({ dispatch, she
 				makeEmptySheet(
 					getBucketNumbers(),
 					getAmphibientsLabels(),
-					'Yannick (hardcoded)'
+					username
 				)
 			)
 		).then(newSheet => {
@@ -96,7 +97,8 @@ const SheetListComp: React.FunctionComponent<ISheetListProps> = ({ dispatch, she
 }
 
 const mapStateToProps = (state: IStoreSchema) => ({
-	sheets: state.sheets.data
+	sheets: state.sheets.data,
+	username: state.user.name
 });
 
 export const SheetList = withRouter(connect(mapStateToProps)(SheetListComp));

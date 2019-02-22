@@ -131,7 +131,6 @@ const SheetEditorConnected = connect(mapStateToProps)(({ match, sheet, sheets, .
 	if (sheetArg) {
 		return <SheetEditorComp sheet={sheetArg} match={match} {...props} />
 	} else {
-		console.log('Redirect');
 		return <Redirect to="/404" />
 	}
 });
