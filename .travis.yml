@@ -7,8 +7,14 @@ language: node_js
 node_js:
 - "node"
 
-before_install:
-  - npm install
+env:
+  - CXX=g++-6
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-6
 
 before_script:
   - cd services/backend/
