@@ -1,14 +1,20 @@
 dist: trusty
-  matrix:
-    include:
-    — language: node_js
-      services:
-        - mongodb
-      before_install:
-        - npm install
-      before_script:
-        - cd services/backend/
-      script:
-        - npm run build
-        - npm run lint
-        - npm run test:cov
+
+services:
+  - mongodb
+
+language: node_js
+node_js:
+- "node"
+
+before_install:
+  - npm install
+
+before_script:
+  - cd services/backend/
+
+script:
+  - npm run build
+  - npm run lint
+  - npm run test:cov
+    
