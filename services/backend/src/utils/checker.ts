@@ -1,14 +1,6 @@
 type TypeNames = "string" | "number" | "boolean" | "undefined" | "function" | "object";
 type Types = string | number | boolean | undefined | Function | object | null;
-/*
-type TypeName<T> =
-	T extends string ? "string" :
-	T extends number ? "number" :
-	T extends boolean ? "boolean" :
-	T extends undefined ? "undefined" :
-	T extends Function ? "function" :
-	"object";
-*/
+
 type TypeNameType<T extends TypeNames> =
 	T extends "string" ? string :
 	T extends "number" ? number :
@@ -37,23 +29,29 @@ export const Type = <T extends TypeNames>(name: T): Checker<unknown, TypeNameTyp
 	value => isType(name, value) ? [null, value] : [["expected " + name + " found " + JSON.stringify(value)]];
 export const OneOf = <T extends Types[]>(...items: T): Checker<unknown, T[number]> => {
 	return value => {
-		for (const item of items)
-			if (item === value)
+		for (const item of items) {
+			if (item === value) {
 				return [null, item];
+			}
+		}
+
 		return [["expected one of " + JSON.stringify(items) + " found " + JSON.stringify(value)]];
 	};
 };
 export type ItemsSchema<T> = Checker<unknown, T>;
 export const ItemsPartial = <T>(items: ItemsSchema<T>): Checker<unknown[], T[]> => {
 	const test = items;
+
 	return values => {
 		let index = 0;
 		for (const value of values) {
 			const result = test(value);
-			if (isCheckError(result))
+			if (isCheckError(result)) {
 				return [result[0].map(error => "[" + index + "] " + error)];
+			}
 			++index;
 		}
+
 		return [null, <T[]>values];
 	};
 };
@@ -62,49 +60,64 @@ export const KeysPartial = <T>(schema: KeysSchema<T>): Checker<Partial<Record<ke
 	const keys = <(keyof T)[]>Object.keys(schema);
 	const tests = keys.map((key) => {
 		const test = schema[key];
+
 		return (value: Partial<Record<keyof T, unknown>>): Check<T[keyof T]> => {
 			const result = test(value[key]);
-			if (isCheckError(result))
+			if (isCheckError(result)) {
 				return [result[0].map(error => "." + key + " " + error)];
+			}
+
 			return result;
 		}
 	});
+
 	return value => {
 		for (const test of tests) {
 			const result = test(value);
-			if (isCheckError(result))
+			if (isCheckError(result)) {
 				return result;
+			}
 		}
+
 		return [null, <{ [key in keyof T]: T[key] }>value];
 	};
 };
 export const AndNot = <U, A, B>(a: Checker<U, A>, b: Checker<U, B>): Checker<U, Exclude<A, B>> => {
 	const testA = a;
 	const testB = b;
+
 	return value => {
-		if (isCheckValid(testB(value)))
+		if (isCheckValid(testB(value))) {
 			return [["ERROR"]];
+		}
 		const result = <Check<Exclude<A, B>>>testA(value);
+
 		return result;
 	};
 }
 export const And = <U, A, B>(a: Checker<U, A>, b: Checker<A, B>): Checker<U, B> => {
 	const testA = a;
 	const testB = b;
+
 	return value => {
 		const result = testA(value);
-		if (isCheckError(result))
+		if (isCheckError(result)) {
 			return result;
+		}
+
 		return testB(result[1]);
 	};
 };
 export const Merge = <U, A, B>(a: Checker<U, A>, b: Checker<U, B>): Checker<U, A & B> => {
 	const testA = a;
 	const testB = b;
+
 	return value => {
 		const result = testA(value);
-		if (isCheckError(result))
+		if (isCheckError(result)) {
 			return result;
+		}
+
 		return <Check<A & B>><unknown>testB(value);
 	};
 };
@@ -113,21 +126,26 @@ export const Or = <T extends unknown[]>(...types: { [key in keyof T]: Checker<un
 		const errors: string[][] = [];
 		for (const test of types) {
 			const result = test(value);
-			if (isCheckValid(result))
+			if (isCheckValid(result)) {
 				return [null, <T[number]>value];
+			}
 			errors.push(result[0]);
 		}
+
 		return [(<string[]>[]).concat(...errors)];
 	};
 };
 
 export const TypeParseInt: Checker<unknown, string> = (value) => {
 	const string = TypeString(value);
-	if (isCheckError(string))
+	if (isCheckError(string)) {
 		return string;
+	}
 	const number = parseInt(string[1], 10);
-	if (isNaN(number))
+	if (isNaN(number)) {
 		return [["expected a string containing a number, found " + JSON.stringify(value)]];
+	}
+
 	return string;
 };
 

@@ -36,8 +36,8 @@ test('invalid authentication token', () => {
 	const mockedNextFunction = jest.fn(() => undefined);
 	const mockedRequest = { headers: { authorization: 'someinvalidtoken' } };
 	const mockedResponse = new class {
-		status: jest.Mock<this, [HTTPStatusCode]> = jest.fn((status) => this);
-		json: jest.Mock<this, any> = jest.fn((payload) => this);
+		public status: jest.Mock<this, [HTTPStatusCode]> = jest.fn((status) => this);
+		public json: jest.Mock<this, any> = jest.fn((payload) => this);
 	}
 
 	middleware(mockedRequest as any, mockedResponse as any, mockedNextFunction);
@@ -53,8 +53,8 @@ test('missing authetication header', () => {
 	const mockedNextFunction = jest.fn(() => undefined);
 	const mockedRequest = { headers: {} };
 	const mockedResponse = new class {
-		status: jest.Mock<this, [HTTPStatusCode]> = jest.fn((status) => this);
-		json: jest.Mock<this, any> = jest.fn((payload) => this);
+		public status: jest.Mock<this, [HTTPStatusCode]> = jest.fn((status) => this);
+		public json: jest.Mock<this, any> = jest.fn((payload) => this);
 	}
 
 	middleware(mockedRequest as any, mockedResponse as any, mockedNextFunction);

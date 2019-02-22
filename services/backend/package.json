@@ -8,7 +8,10 @@
 		"build": "tsc --project tsconfig.json",
 		"test": "jest --config=jest.json",
 		"test:watch": "jest --watch --config=jest.json",
-		"test:cov": "jest --collectCoverage --config=jest.json"
+		"test:cov": "jest --collectCoverage --config=jest.json",
+		"test:ci": "npm run test:cov && codecov",
+		"lint": "tslint --project tsconfig.json --config tslint.json",
+		"lint:fix": "tslint --fix --project tsconfig.json --config tslint.json"
 	},
 	"author": "Yannick Stachelscheid",
 	"license": "MIT",
@@ -40,6 +43,7 @@
 		"@types/node": "^10.12.24",
 		"@types/supertest": "^2.0.7",
 		"@types/uuid": "^3.4.4",
+		"codecov": "^3.2.0",
 		"cross-env": "^5.2.0",
 		"jest": "^24.1.0",
 		"supertest": "^3.4.2",
