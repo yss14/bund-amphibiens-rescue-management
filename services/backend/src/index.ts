@@ -57,4 +57,5 @@ if (!__PROD__) {
 	await makeHTTPServerAndStartExpress(expressApp, restPort);
 
 	console.info(`Server is running of port ${restPort}`);
-})();
+})()
+	.catch(err => console.error(err));

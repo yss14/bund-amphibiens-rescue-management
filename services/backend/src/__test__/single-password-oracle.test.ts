@@ -30,5 +30,5 @@ test('make single password oracle from env var', async () => {
 
 	const passwordOracle = await makeSinglePasswordOracleFromEnvVar(CustomEnv.LOGIN_PASSWORD);
 
-	expect(passwordOracle.passwordIsValid(password)).toBeTruthy();
+	await expect(passwordOracle.passwordIsValid(password)).toBeTruthy();
 });

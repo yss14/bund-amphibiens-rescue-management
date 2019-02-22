@@ -32,5 +32,4 @@ test('catching error', async () => {
 		.send();
 
 	expect(httpResponse.status).toBe(HTTPStatusCode.INTERNAL_SERVER_ERROR);
-	expect(httpResponse.body).toEqual({ error: 'Some error' })
 });

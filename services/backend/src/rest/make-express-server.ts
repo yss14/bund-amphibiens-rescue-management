@@ -23,7 +23,7 @@ export const makeExpressServer = (...routers: Express.Router[]) => {
 		expressApp.use(routers);
 	}
 
-	expressApp.use((err: Error, req: Express.Request, res: Express.Response, next: Express.NextFunction) => {
+	expressApp.use((err: Error, req: Express.Request, res: Express.Response) => {
 		/* istanbul ignore if */
 		if (!__TEST__) {
 			console.error(err);

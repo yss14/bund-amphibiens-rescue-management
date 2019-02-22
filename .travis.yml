@@ -16,6 +16,8 @@ addons:
     packages:
       - g++-6
 
+cache: npm
+
 before_script:
   - cd services/backend/
   - npm install
@@ -23,5 +25,5 @@ before_script:
 script:
   - npm run build
   - npm run lint
-  - npm run test:cov
+  - npm run test:ci
     
