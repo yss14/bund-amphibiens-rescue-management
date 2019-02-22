@@ -1,7 +1,7 @@
 # Bund Amphibiens Rescue Management
 
 [![Build Status](https://travis-ci.com/yss14/bund-amphibiens-rescue-management.svg?branch=master)](https://travis-ci.com/yss14/bund-amphibiens-rescue-management)
-[![codecov](https://codecov.io/gh/yss14/bund-amphibiens-rescue-management/branch/master/graph/badge.svg)](https://codecov.io/gh/yss14/bund-amphibiens-rescue-management)
+[![codecov](https://codecov.io/gh/yss14/bund-amphibiens-rescue-management/branch/master/graph/badge.svg)](https://codecov.io/gh/yss14/bund-amphibiens-rescue-management) [![Greenkeeper badge](https://badges.greenkeeper.io/yss14/bund-amphibiens-rescue-management.svg)](https://greenkeeper.io/)
 
 A simple and small web application for [BUND](https://www.bund.net/) local groups to organize and collect their data from [amphibiens rescue activities](https://www.nabu.de/tiere-und-pflanzen/aktionen-und-projekte/aktion-kroetenwanderung/01031.html).
 
