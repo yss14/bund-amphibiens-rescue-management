@@ -8,6 +8,7 @@ export const makeAndConnectDatabase = async (dbName?: string) => {
 	const mongoDBPassword = process.env[CustomEnv.MONGODB_PASSWORD];
 	const mongoDBDatabase = dbName || process.env[CustomEnv.MONGODB_DATABASE];
 	const mongoDBUrl = `mongodb://${mongoDBHost}:${mongoDBPort}`;
+	const connectionString = process.env[CustomEnv.MONGODB_CONNECTION_STRING];
 
 	const opts: MongoClientOptions = {
 		useNewUrlParser: true
@@ -21,7 +22,9 @@ export const makeAndConnectDatabase = async (dbName?: string) => {
 		}
 	}
 
-	const connection = new MongoClient(mongoDBUrl, opts);
+	let finalUrl = connectionString || mongoDBUrl;
+
+	const connection = new MongoClient(finalUrl, opts);
 
 	await connection.connect();
 
