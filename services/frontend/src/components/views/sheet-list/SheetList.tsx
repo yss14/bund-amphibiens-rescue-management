@@ -7,7 +7,7 @@ import { ISheetWithID } from '../../../../../shared-types/ISheet';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { List, Fab } from '@material-ui/core';
+import { List, Fab, Button } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import moment from 'moment';
 import { SheetListItem } from './SheetListItem';
@@ -20,6 +20,7 @@ import { APIContext } from '../../../Root';
 import { createSheet } from '../../../redux/sheets/actions/sheet-create.action';
 import { LoadingSpinner } from '../../other/LoadingSpinner';
 import { getAppTitle } from '../../../utils/get-app-title';
+import { ExportDialog } from './ExportDialog';
 
 interface ISheetListProps extends DispatchPropThunk<IStoreSchema, SheetsAction>, RouteComponentProps {
 	sheets: ISheetWithID[];
@@ -29,6 +30,7 @@ interface ISheetListProps extends DispatchPropThunk<IStoreSchema, SheetsAction>,
 const SheetListComp: React.FunctionComponent<ISheetListProps> = ({ dispatch, sheets, match, history, username }) => {
 	const apiContext = useContext(APIContext);
 	const [isCreatingSheet, setIsCreatingSheet] = useState(false);
+	const [showExportDialog, setShowExportDialog] = useState(false);
 
 	const sortSheets = (lhs: ISheetWithID, rhs: ISheetWithID) => {
 		return moment(rhs.dateOfRecord).valueOf() - moment(lhs.dateOfRecord).valueOf();
@@ -73,6 +75,7 @@ const SheetListComp: React.FunctionComponent<ISheetListProps> = ({ dispatch, she
 			<AppBar position="fixed">
 				<Toolbar>
 					<Typography variant="h6" color="inherit" noWrap>{getAppTitle()}</Typography>
+					<Button color="inherit" style={{ marginLeft: 'auto', marginRight: 10 }} onClick={() => setShowExportDialog(true)}>Exportieren</Button>
 				</Toolbar>
 			</AppBar>
 			{!isCreatingSheet && <React.Fragment>
@@ -91,6 +94,7 @@ const SheetListComp: React.FunctionComponent<ISheetListProps> = ({ dispatch, she
 				</Fab>
 			</React.Fragment>}
 			{isCreatingSheet && <LoadingSpinner />}
+			<ExportDialog open={showExportDialog} onClose={() => setShowExportDialog(false)} years={[2018, 2019]} />
 		</React.Fragment>
 	);
 }
