@@ -94,7 +94,7 @@ export const Login = connect(mapStateToProps)(({ dispatch, accessToken }: ILogin
 					<LockOutlinedIcon />
 				</Avatar>
 				<Typography component="h1" variant="h5" style={{ marginTop: 8 }}>Anmelden</Typography>
-				<form onSubmit={onClickLogin}>
+				<form onSubmit={onClickLogin} style={{ width: '100%' }}>
 					<FormControl margin="normal" required fullWidth error={name !== null && !isValidName(name)}>
 						<InputLabel htmlFor="name">Name</InputLabel>
 						<Input id="name" name="name" autoFocus onChange={(e) => setName(e.target.value)} />
