@@ -19,6 +19,7 @@ import urljoin from 'url-join';
 import { APIContext } from '../../../Root';
 import { createSheet } from '../../../redux/sheets/actions/sheet-create.action';
 import { LoadingSpinner } from '../../other/LoadingSpinner';
+import { getAppTitle } from '../../../utils/get-app-title';
 
 interface ISheetListProps extends DispatchPropThunk<IStoreSchema, SheetsAction>, RouteComponentProps {
 	sheets: ISheetWithID[];
@@ -71,9 +72,7 @@ const SheetListComp: React.FunctionComponent<ISheetListProps> = ({ dispatch, she
 		<React.Fragment>
 			<AppBar position="fixed">
 				<Toolbar>
-					<Typography variant="h6" color="inherit" noWrap>
-						BUND - Froschverwaltung
-          			</Typography>
+					<Typography variant="h6" color="inherit" noWrap>{getAppTitle()}</Typography>
 				</Toolbar>
 			</AppBar>
 			{!isCreatingSheet && <React.Fragment>

@@ -17,6 +17,7 @@ import axios from 'axios';
 import { isAxiosError } from './typeguards/is-axios-error';
 import { logout } from './redux/user/user.actions';
 import { LoginAPI, ILoginAPI } from './api/login-api';
+import { getAppTitle } from './utils/get-app-title';
 
 const history = createBrowserHistory();
 const store = createReduxStore();
@@ -64,6 +65,9 @@ const theme = createMuiTheme({
 		useNextVariants: true,
 	},
 });
+
+const appTitle = getAppTitle();
+document.title = appTitle;
 
 const sharedAxiosInstance = axios.create({
 	baseURL: process.env.REACT_APP_BACKEND_URL || 'localhost:3000'
