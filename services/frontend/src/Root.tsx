@@ -31,6 +31,11 @@ const GlobalStyle = createGlobalStyle`
 		padding: 0px;
 		width: 100%;
 		height: 100%;
+		background-color: #ecf0f1;
+	}
+
+	#root{
+		background-color: white;
 	}
 
 	@media only screen and (min-width : 1200px) {
