@@ -37,6 +37,7 @@ const GlobalStyle = createGlobalStyle`
 
 	#root{
 		background-color: white;
+		height: auto;
 	}
 
 	@media only screen and (min-width : 1200px) {

@@ -75,11 +75,15 @@ const SheetListComp: React.FunctionComponent<ISheetListProps> = ({ dispatch, she
 			<AppBar position="fixed">
 				<Toolbar>
 					<Typography variant="h6" color="inherit" noWrap>{getAppTitle()}</Typography>
-					<Button color="inherit" style={{ marginLeft: 'auto', marginRight: 10 }} onClick={() => setShowExportDialog(true)}>Exportieren</Button>
+					<Button
+						color="inherit"
+						style={{ marginLeft: 'auto', marginRight: 10, display: window.innerWidth >= 420 ? 'block' : 'none' }}
+						onClick={() => setShowExportDialog(true)}
+					>Exportieren</Button>
 				</Toolbar>
 			</AppBar>
 			{!isCreatingSheet && <React.Fragment>
-				<List style={{ marginTop: 64, paddingTop: 0, overflowY: 'auto' }}>
+				<List style={{ marginTop: 0, paddingTop: 64, overflowY: 'auto' }}>
 					{sheets.sort(sortSheets).map((sheet, i) =>
 						<SheetListItem
 							key={sheet.id}
