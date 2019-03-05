@@ -30,7 +30,7 @@ const DayIcon = styled.div`
 
 export const SheetListItem: React.FunctionComponent<ISheetListItemProps> = ({ sheet, isSameDayAsPrevItem, onClick }) => {
 	const isToday = moment().isSame(moment(sheet.dateOfRecord), 'day');
-	const subheaderTitle = isToday ? 'Today' : moment(sheet.dateOfRecord).format('dddd DD.MM.YYYY');
+	const subheaderTitle = isToday ? 'Heute' : moment(sheet.dateOfRecord).format('dddd DD.MM.YYYY');
 
 	return (
 		<React.Fragment key={sheet.id}>
