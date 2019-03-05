@@ -18,6 +18,11 @@ import { isAxiosError } from './typeguards/is-axios-error';
 import { logout } from './redux/user/user.actions';
 import { LoginAPI, ILoginAPI } from './api/login-api';
 import { getAppTitle } from './utils/get-app-title';
+import * as moment from 'moment';
+import 'moment/locale/de';
+
+const momentLocale = 'de';
+moment.locale(momentLocale);
 
 const history = createBrowserHistory();
 const store = createReduxStore();
