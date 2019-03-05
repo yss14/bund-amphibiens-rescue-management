@@ -38,11 +38,12 @@ const GlobalStyle = createGlobalStyle`
 		width: 100%;
 		height: 100%;
 		background-color: #ecf0f1;
+		position: relative;
 	}
 
 	#root{
 		background-color: white;
-		height: auto;
+		height: 100%;
 	}
 
 	@media only screen and (min-width : 1200px) {

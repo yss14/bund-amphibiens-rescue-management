@@ -12,7 +12,7 @@ interface ISheetEditorAppBarProps extends RouteComponentProps {
 
 export const SheetEditorAppBar: React.FunctionComponent<ISheetEditorAppBarProps> = ({ sheet, history, onClickSave }) => {
 	const isToday = moment().isSame(moment(sheet.dateOfRecord), 'day');
-	const headerTitleDate = isToday ? 'Today' : moment(sheet.dateOfRecord).format('dddd DD.MM.YYYY');
+	const headerTitleDate = isToday ? 'Heute' : moment(sheet.dateOfRecord).format('dddd DD.MM.YYYY');
 
 	const onClickArrowBack = () => {
 		history.push('/sheets');

@@ -83,7 +83,7 @@ const SheetListComp: React.FunctionComponent<ISheetListProps> = ({ dispatch, she
 				</Toolbar>
 			</AppBar>
 			{!isCreatingSheet && <React.Fragment>
-				<List style={{ marginTop: 0, paddingTop: 64, overflowY: 'auto' }}>
+				<List style={{ marginTop: 0, paddingTop: 64, overflowY: 'auto', backgroundColor: 'white' }}>
 					{sheets.sort(sortSheets).map((sheet, i) =>
 						<SheetListItem
 							key={sheet.id}
