@@ -128,7 +128,7 @@ const makeCreateExcelWorkbook = async () => {
 			for (let j = 0; j <= uniqueAmphibiensKinds.length; j++) {
 				const cellTop = ALPHABET[6 + j] + 2;
 				const cellBottom = ALPHABET[6 + j] + (entries.length * numberOfRowsPerEntry + 3);
-				const formular = `=SUM(${cellTop}:${cellBottom})`;
+				const formular = `=SUM(${cellTop}:${cellBottom})/2`;
 				data[entries.length * numberOfRowsPerEntry + 4][6 + j] = { f: formular };
 			}
 		}
