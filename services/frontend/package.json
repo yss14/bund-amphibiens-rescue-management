@@ -42,7 +42,7 @@
 	],
 	"devDependencies": {
 		"@types/file-saver": "^2.0.0",
-		"@types/jest": "24.0.10",
+		"@types/jest": "24.0.19",
 		"@types/lodash.groupby": "^4.6.5",
 		"@types/lodash.uniqby": "^4.7.5",
 		"@types/moment": "^2.13.0",
