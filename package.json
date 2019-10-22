@@ -3,6 +3,6 @@
 	"private": true,
 	"devDependencies": {
 		"@types/node": "^11.9.5",
-		"lerna": "^3.10.7"
+		"lerna": "^3.18.2"
 	}
 }
