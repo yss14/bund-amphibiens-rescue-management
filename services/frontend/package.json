@@ -54,7 +54,7 @@
 		"@types/react-router-dom": "^4.3.1",
 		"@types/redux": "^3.6.0",
 		"@types/redux-thunk": "^2.1.0",
-		"@types/styled-components": "^4.1.8",
+		"@types/styled-components": "^4.4.0",
 		"@types/url-join": "^4.0.0",
 		"axios": "^0.18.0",
 		"jspolyfill-array.prototype.find": "^0.1.3",
