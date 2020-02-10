@@ -98,7 +98,7 @@ const SheetListComp: React.FunctionComponent<ISheetListProps> = ({ dispatch, she
 				</Fab>
 			</React.Fragment>}
 			{isCreatingSheet && <LoadingSpinner />}
-			<ExportDialog open={showExportDialog} onClose={() => setShowExportDialog(false)} years={[2018, 2019]} />
+			<ExportDialog open={showExportDialog} onClose={() => setShowExportDialog(false)} years={[2018, 2019, 2020]} />
 		</React.Fragment>
 	);
 }
