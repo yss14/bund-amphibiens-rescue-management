@@ -25,7 +25,8 @@ test('catching error', async () => {
 	const throwingRouter = Express.Router();
 	throwingRouter.get('/throwingroute', () => { throw new Error('Some error') });
 
-	const expressApp = makeExpressServer(throwingRouter);
+	const expressApp = makeExpressServer();
+	expressApp.use(throwingRouter)
 
 	const httpResponse = await supertest(expressApp)
 		.get('/throwingroute')

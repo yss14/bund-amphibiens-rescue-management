@@ -15,7 +15,8 @@ afterAll(async () => {
 test('get existing sheet', async () => {
 	const { sheetService, cleanup } = await makeUniqueTestSheetService();
 	cleanUpHooks.push(cleanup);
-	const expressApp = makeExpressServer(makeSheetsRouter(sheetService));
+	const expressApp = makeExpressServer();
+	makeSheetsRouter(expressApp, sheetService)
 
 	const createdSheet = await sheetService.createSheet(sheetTemplate1);
 
@@ -30,7 +31,8 @@ test('get existing sheet', async () => {
 test('get sheet by invalid sheetID', async () => {
 	const { sheetService, cleanup } = await makeUniqueTestSheetService();
 	cleanUpHooks.push(cleanup);
-	const expressApp = makeExpressServer(makeSheetsRouter(sheetService));
+	const expressApp = makeExpressServer();
+	makeSheetsRouter(expressApp, sheetService)
 
 	const httpResponse = await supertest(expressApp)
 		.get(`/sheets/42`)
@@ -42,7 +44,8 @@ test('get sheet by invalid sheetID', async () => {
 test('get sheet by not-existing sheetID', async () => {
 	const { sheetService, cleanup } = await makeUniqueTestSheetService();
 	cleanUpHooks.push(cleanup);
-	const expressApp = makeExpressServer(makeSheetsRouter(sheetService));
+	const expressApp = makeExpressServer();
+	makeSheetsRouter(expressApp, sheetService)
 
 	const notExistingID = '5c6082cea068a184fc11aaaa';
 
@@ -59,7 +62,8 @@ test('get sheet with unexpected database error', async () => {
 
 	sheetService.getSheet = () => { throw new Error('Unexpected database error') };
 
-	const expressApp = makeExpressServer(makeSheetsRouter(sheetService));
+	const expressApp = makeExpressServer();
+	makeSheetsRouter(expressApp, sheetService)
 
 	const httpResponse = await supertest(expressApp)
 		.get(`/sheets/5c6082cea068a184fc11aaaa`)

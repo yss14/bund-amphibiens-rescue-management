@@ -17,7 +17,8 @@ const makeLoginService = (passwordIsValid: boolean = true) => {
 
 test('valid password', async () => {
 	const loginService = makeLoginService();
-	const expressApp = makeExpressServer(makeLoginRouter(loginService));
+	const expressApp = makeExpressServer();
+	makeLoginRouter(expressApp, loginService)
 
 	const httpResponse = await supertest(expressApp)
 		.post('/login')
@@ -32,7 +33,8 @@ test('valid password', async () => {
 
 test('invalid password', async () => {
 	const loginService = makeLoginService(false);
-	const expressApp = makeExpressServer(makeLoginRouter(loginService));
+	const expressApp = makeExpressServer();
+	makeLoginRouter(expressApp, loginService)
 
 	const httpResponse = await supertest(expressApp)
 		.post('/login')
@@ -47,7 +49,8 @@ test('invalid password', async () => {
 
 test('missing name param', async () => {
 	const loginService = makeLoginService();
-	const expressApp = makeExpressServer(makeLoginRouter(loginService));
+	const expressApp = makeExpressServer();
+	makeLoginRouter(expressApp, loginService)
 
 	const httpResponse = await supertest(expressApp)
 		.post('/login')
@@ -61,7 +64,8 @@ test('missing name param', async () => {
 
 test('invalid name property', async () => {
 	const loginService = makeLoginService();
-	const expressApp = makeExpressServer(makeLoginRouter(loginService));
+	const expressApp = makeExpressServer();
+	makeLoginRouter(expressApp, loginService)
 
 	const httpResponse = await supertest(expressApp)
 		.post('/login')
@@ -76,7 +80,8 @@ test('invalid name property', async () => {
 
 test('missing password property', async () => {
 	const loginService = makeLoginService();
-	const expressApp = makeExpressServer(makeLoginRouter(loginService));
+	const expressApp = makeExpressServer();
+	makeLoginRouter(expressApp, loginService)
 
 	const httpResponse = await supertest(expressApp)
 		.post('/login')
@@ -90,7 +95,8 @@ test('missing password property', async () => {
 
 test('invalid password property', async () => {
 	const loginService = makeLoginService();
-	const expressApp = makeExpressServer(makeLoginRouter(loginService));
+	const expressApp = makeExpressServer();
+	makeLoginRouter(expressApp, loginService)
 
 	const httpResponse = await supertest(expressApp)
 		.post('/login')

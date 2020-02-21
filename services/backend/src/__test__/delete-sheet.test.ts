@@ -14,7 +14,8 @@ afterAll(async () => {
 test('delete existing sheet', async () => {
 	const { sheetService, cleanup } = await makeUniqueTestSheetService();
 	cleanUpHooks.push(cleanup);
-	const expressApp = makeExpressServer(makeSheetsRouter(sheetService));
+	const expressApp = makeExpressServer();
+	makeSheetsRouter(expressApp, sheetService)
 
 	const createdSheet = await sheetService.createSheet(sheetTemplate1);
 
@@ -29,7 +30,8 @@ test('delete existing sheet', async () => {
 test('delete not-existing sheet', async () => {
 	const { sheetService, cleanup } = await makeUniqueTestSheetService();
 	cleanUpHooks.push(cleanup);
-	const expressApp = makeExpressServer(makeSheetsRouter(sheetService));
+	const expressApp = makeExpressServer();
+	makeSheetsRouter(expressApp, sheetService)
 
 	const notExistingID = '5c6082cea068a184fc11aaaa';
 
@@ -43,7 +45,8 @@ test('delete not-existing sheet', async () => {
 test('delete sheet by invalid shareID', async () => {
 	const { sheetService, cleanup } = await makeUniqueTestSheetService();
 	cleanUpHooks.push(cleanup);
-	const expressApp = makeExpressServer(makeSheetsRouter(sheetService));
+	const expressApp = makeExpressServer();
+	makeSheetsRouter(expressApp, sheetService)
 
 	const httpResponse = await supertest(expressApp)
 		.delete(`/sheets/invalidid`)
@@ -58,7 +61,8 @@ test('delete sheet with unexpected database error', async () => {
 
 	sheetService.deleteSheet = () => { throw new Error('Unexpected database error') };
 
-	const expressApp = makeExpressServer(makeSheetsRouter(sheetService));
+	const expressApp = makeExpressServer();
+	makeSheetsRouter(expressApp, sheetService)
 
 	const httpResponse = await supertest(expressApp)
 		.delete(`/sheets/invalidid`)

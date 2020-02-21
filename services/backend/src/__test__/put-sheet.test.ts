@@ -16,7 +16,8 @@ afterAll(async () => {
 test('put sheet update meta data and add new table items', async () => {
 	const { sheetService, cleanup } = await makeUniqueTestSheetService();
 	cleanUpHooks.push(cleanup);
-	const expressApp = makeExpressServer(makeSheetsRouter(sheetService));
+	const expressApp = makeExpressServer();
+	makeSheetsRouter(expressApp, sheetService)
 
 	const oldSheet: ISheet = sheetTemplate1;
 	const oldSheetCreated = await sheetService.createSheet(oldSheet);
@@ -42,7 +43,8 @@ test('put sheet update meta data and add new table items', async () => {
 test('update meta data and replace whole table items', async () => {
 	const { sheetService, cleanup } = await makeUniqueTestSheetService();
 	cleanUpHooks.push(cleanup);
-	const expressApp = makeExpressServer(makeSheetsRouter(sheetService));
+	const expressApp = makeExpressServer();
+	makeSheetsRouter(expressApp, sheetService)
 
 	const oldSheet: ISheet = sheetTemplate1;
 	const oldSheetCreated = await sheetService.createSheet(oldSheet);
@@ -68,7 +70,8 @@ test('update meta data and replace whole table items', async () => {
 test('update sheet with no diff', async () => {
 	const { sheetService, cleanup } = await makeUniqueTestSheetService();
 	cleanUpHooks.push(cleanup);
-	const expressApp = makeExpressServer(makeSheetsRouter(sheetService));
+	const expressApp = makeExpressServer();
+	makeSheetsRouter(expressApp, sheetService)
 
 	const oldSheet: ISheet = sheetTemplate1;
 	const oldSheetCreated = await sheetService.createSheet(oldSheet);

@@ -7,7 +7,7 @@ import { makeDeleteSheetRoute } from "./routes/delete-sheet";
 import { makePutSheetRoute } from "./routes/put-sheet";
 import { __PROD__ } from "../utils/env/env-constants";
 
-export const makeSheetsRouter = (sheetService: SheetService, authMiddleware?: Express.RequestHandler) => {
+export const makeSheetsRouter = (expressApp: Express.Application, sheetService: SheetService, authMiddleware?: Express.RequestHandler) => {
 	/* istanbul ignore next */
 	if (__PROD__ && authMiddleware === undefined) {
 		console.warn(`Sheets routes are not protected by an authentication mechanism`);
@@ -19,11 +19,11 @@ export const makeSheetsRouter = (sheetService: SheetService, authMiddleware?: Ex
 		router.use(authMiddleware);
 	}
 
-	router.get('/sheets', makeGetSheetsRoute(sheetService));
-	router.get('/sheets/:sheetID', makeGetSheetRoute(sheetService));
-	router.post('/sheets', makePostSheetRoute(sheetService));
-	router.put('/sheets/:sheetID', makePutSheetRoute(sheetService));
-	router.delete('/sheets/:sheetID', makeDeleteSheetRoute(sheetService));
+	router.get('/', makeGetSheetsRoute(sheetService));
+	router.get('/:sheetID', makeGetSheetRoute(sheetService));
+	router.post('/', makePostSheetRoute(sheetService));
+	router.put('/:sheetID', makePutSheetRoute(sheetService));
+	router.delete('/:sheetID', makeDeleteSheetRoute(sheetService));
 
-	return router;
+	expressApp.use('/sheets', router)
 }

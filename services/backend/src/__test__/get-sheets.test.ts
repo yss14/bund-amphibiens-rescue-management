@@ -15,7 +15,8 @@ afterAll(async () => {
 test('get list of existing sheets', async () => {
 	const { sheetService, cleanup } = await makeUniqueTestSheetService();
 	cleanUpHooks.push(cleanup);
-	const expressApp = makeExpressServer(makeSheetsRouter(sheetService));
+	const expressApp = makeExpressServer();
+	makeSheetsRouter(expressApp, sheetService)
 
 	const createdSheet1 = await sheetService.createSheet(sheetTemplate1);
 	const createdSheet2 = await sheetService.createSheet(sheetTemplate2);
@@ -31,7 +32,8 @@ test('get list of existing sheets', async () => {
 test('get empty list of sheets', async () => {
 	const { sheetService, cleanup } = await makeUniqueTestSheetService();
 	cleanUpHooks.push(cleanup);
-	const expressApp = makeExpressServer(makeSheetsRouter(sheetService));
+	const expressApp = makeExpressServer();
+	makeSheetsRouter(expressApp, sheetService)
 
 	const httpResponse = await supertest(expressApp)
 		.get(`/sheets`)

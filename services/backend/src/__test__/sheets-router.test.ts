@@ -7,7 +7,8 @@ import { HTTPStatusCode } from "../types/HTTPStatusCode";
 test('create sheets router with auth middleware', async () => {
 	const authMiddleware: Express.RequestHandler = (req, res) => res.status(HTTPStatusCode.UNAUTHORIZED).end();
 
-	const expressApp = makeExpressServer(makeSheetsRouter(null as any, authMiddleware));
+	const expressApp = makeExpressServer();
+	makeSheetsRouter(expressApp, null as any, authMiddleware)
 
 	const httpResponse = await supertest(expressApp)
 		.get(`/sheets/42`)

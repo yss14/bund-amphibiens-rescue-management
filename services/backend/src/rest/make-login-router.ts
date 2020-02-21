@@ -2,10 +2,10 @@ import * as Express from 'express';
 import { LoginService } from "../services/login-service/LoginService";
 import { makePostLoginRoute } from './routes/post-login';
 
-export const makeLoginRouter = (loginService: LoginService) => {
+export const makeLoginRouter = (expressApp: Express.Application, loginService: LoginService) => {
 	const router = Express.Router();
 
-	router.post('/login', makePostLoginRoute(loginService));
+	router.post('/', makePostLoginRoute(loginService));
 
-	return router;
+	expressApp.use('/login', router)
 }

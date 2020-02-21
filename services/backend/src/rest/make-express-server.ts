@@ -3,11 +3,10 @@ import * as BodyParser from 'body-parser';
 import * as Cors from 'cors';
 import * as Morgan from 'morgan';
 import * as http from 'http';
-import { HTTPStatusCode } from "../types/HTTPStatusCode";
 import { __TEST__ } from "../utils/env/env-constants";
 
-export const makeExpressServer = (...routers: Express.Router[]) => {
-	const expressApp = Express();
+export const makeExpressServer = () => {
+	const expressApp = Express()
 
 	expressApp.use(Cors());
 	expressApp.use(BodyParser.json({ strict: false }));
@@ -18,19 +17,6 @@ export const makeExpressServer = (...routers: Express.Router[]) => {
 	if (!__TEST__) {
 		expressApp.use(Morgan('dev'));
 	}
-
-	if (routers.length > 0) {
-		expressApp.use(routers);
-	}
-
-	expressApp.use((err: Error, req: Express.Request, res: Express.Response) => {
-		/* istanbul ignore if */
-		if (!__TEST__) {
-			console.error(err);
-		}
-
-		res.status(HTTPStatusCode.INTERNAL_SERVER_ERROR).json({ error: err.message });
-	});
 
 	return expressApp;
 }
