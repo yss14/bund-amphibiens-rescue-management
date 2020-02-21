@@ -16,7 +16,7 @@
 		"strict": true,
 		"strictNullChecks": true,
 		"noImplicitReturns": true,
-		"allowSyntheticDefaultImports": false,
+		"allowSyntheticDefaultImports": true,
 		"sourceMap": true,
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
