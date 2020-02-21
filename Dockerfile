@@ -16,6 +16,9 @@ RUN npm run build
 # Stage 2 - Execute
 FROM node:10
 
+RUN apt update
+RUN apt-get -y install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
+
 # Create app directory and copy assets from prev stage
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app

@@ -1,2 +1,5 @@
 services/backend/node_modules
 services/backend/build
+node_modules
+services/frontend/node_modules
+services/frontend/build
