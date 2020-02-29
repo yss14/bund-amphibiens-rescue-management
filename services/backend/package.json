@@ -16,7 +16,7 @@
 	"author": "Yannick Stachelscheid",
 	"license": "MIT",
 	"dependencies": {
-		"argon2": "^0.21.0",
+		"argon2": "^0.26.1",
 		"body-parser": "^1.18.3",
 		"cors": "^2.8.5",
 		"dotenv": "^6.2.0",
