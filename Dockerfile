@@ -1,5 +1,5 @@
 # Stage 1 - Build
-FROM node:10 as build
+FROM node:16-slim as build
 
 # Create app directory
 RUN mkdir -p /usr/src/app
@@ -10,13 +10,16 @@ COPY ./ /usr/src/app/
 
 WORKDIR /usr/src/app/services/backend
 
-RUN npm install
+RUN apt-get update
+RUN apt-get -y install python3 make g++ && rm -rf /var/cache/apk/*
+
+RUN npm install --force
 RUN npm run build
 
 # Stage 2 - Execute
-FROM node:10
+FROM node:16-slim
 
-RUN apt update
+RUN apt-get update
 RUN apt-get -y install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
 
 # Create app directory and copy assets from prev stage
