@@ -1,8 +1,12 @@
 {
-	"name": "root",
-	"private": true,
-	"devDependencies": {
-		"@types/node": "^11.9.5",
-		"lerna": "^3.10.7"
-	}
+	"name": "bund-amphibiens-rescue-management",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [],
+	"author": "Yannick Stachelscheid",
+	"license": "MIT"
 }
